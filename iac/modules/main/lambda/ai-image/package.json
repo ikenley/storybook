@@ -1,0 +1,19 @@
+{
+  "name": "ai-image",
+  "version": "1.0.0",
+  "description": "This is an example of a more complex Step Function use case. There are simplifications that one would not use in production, but it demonstrates a Step Function which uses: - Lambda Functions - An ECS Task - A manual approval stage - SNS notifications",
+  "main": "index.js",
+  "scripts": {
+    "local": "node ./src/local.mjs",
+    "start": "node ./src/index.mjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.614.0",
+    "@aws-sdk/client-rekognition": "^3.616.0",
+    "@aws-sdk/client-s3": "^3.614.0",
+    "@aws-sdk/client-sfn": "^3.616.0",
+    "dotenv": "^16.4.5"
+  }
+}
