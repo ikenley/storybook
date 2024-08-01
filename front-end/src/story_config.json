@@ -1,0 +1,9 @@
+{
+  "cover": { "title": "The Cat Who Sailed" },
+  "pages": [
+    { "pageNumber": 1, "line": "A cat with a hat and a tail so long" },
+    { "pageNumber": 2, "line": "Loves to sail boats and sing a song." },
+    { "pageNumber": 3, "line": "With a paw on the helm and eyes so bright," },
+    { "pageNumber": 4, "line": "Sailing through the day and into the night." }
+  ]
+}
