@@ -37,7 +37,7 @@ const nextPageNumber = pageNumberInt < maxPageNumber ? pageNumberInt + 1 : null;
               prevPageNumber && (
                 <a
                   class="btn btn-secondary btn-lg h-100 rounded-0"
-                  href={`/page/${prevPageNumber}`}
+                  href={`${import.meta.env.BASE_URL}/page/${prevPageNumber}`}
                 >
                   {"<"}
                 </a>
@@ -46,7 +46,7 @@ const nextPageNumber = pageNumberInt < maxPageNumber ? pageNumberInt + 1 : null;
           </div>
           <img
             class="main-image"
-            src={`/img/page_${pageNumber}.png`}
+            src={`${import.meta.env.BASE_URL}/img/page_${pageNumber}.png`}
             alt={page.line}
           />
           <div>
@@ -54,7 +54,7 @@ const nextPageNumber = pageNumberInt < maxPageNumber ? pageNumberInt + 1 : null;
               nextPageNumber && (
                 <a
                   class="btn btn-secondary btn-lg h-100 rounded-0"
-                  href={`/page/${nextPageNumber}`}
+                  href={`${import.meta.env.BASE_URL}/page/${nextPageNumber}`}
                 >
                   {">"}
                 </a>

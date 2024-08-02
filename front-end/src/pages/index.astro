@@ -1,13 +1,15 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import storyConfig from "../story_config.json"
+import Layout from "../layouts/Layout.astro";
+import storyConfig from "../story_config.json";
 ---
 
 <Layout title={storyConfig.cover.title}>
-	<main>
-		<h1>{storyConfig.cover.title}</h1>
-		<img src="/img/cover.png" alt={storyConfig.cover.title} />
-		<div><a href="/page/1">{">"}</a></div>
-	</main>
+  <main>
+    <h1>{storyConfig.cover.title}</h1>
+    <img
+      src={`${import.meta.env.BASE_URL}/img/cover.png`}
+      alt={storyConfig.cover.title}
+    />
+    <div><a href={`${import.meta.env.BASE_URL}/page/1`}>{">"}</a></div>
+  </main>
 </Layout>
-
