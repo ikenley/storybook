@@ -1,32 +1,75 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import storyConfig from "../../story_config.json"
+import Layout from "../../layouts/Layout.astro";
+import storyConfig from "../../story_config.json";
 
 export function getStaticPaths() {
-  return storyConfig.pages.map(c => {
-	return {params: {pageNumber: c.pageNumber.toString()}}
-  })
+  return storyConfig.pages.map((c) => {
+    return { params: { pageNumber: c.pageNumber.toString() } };
+  });
 }
 
-const {pageNumber} = Astro.params
-const pageNumberInt = parseInt(pageNumber)
+const { pageNumber } = Astro.params;
+const pageNumberInt = parseInt(pageNumber);
 
-const page = storyConfig.pages.find(p => pageNumberInt === p.pageNumber)
+const page = storyConfig.pages.find((p) => pageNumberInt === p.pageNumber);
+
+if (!page) {
+  return {
+    status: 404,
+  };
+}
 
 const prevPageNumber = pageNumberInt > 1 ? pageNumberInt - 1 : null;
 
-const maxPageNumber = storyConfig.pages[storyConfig.pages.length-1].pageNumber
+const maxPageNumber =
+  storyConfig.pages[storyConfig.pages.length - 1].pageNumber;
 const nextPageNumber = pageNumberInt < maxPageNumber ? pageNumberInt + 1 : null;
 ---
 
 <Layout title={storyConfig.cover.title}>
-	<main>
-		<h1>{page.line}</h1>
-		<img src={`/img/page_${pageNumber}.png`} alt={page.line} />
-		<div>
-			{prevPageNumber && <a href={`/page/${prevPageNumber}`}>{"<"}</a>}
-			{nextPageNumber  && <a href={`/page/${nextPageNumber}`}>{">"}</a>}
-		</div>
-	</main>
+  <main>
+    <div class="container d-flex justify-content-center">
+      <div>
+        <h1 class="text-center">{page.line}</h1>
+        <div class="d-flex">
+          <div>
+            {
+              prevPageNumber && (
+                <a
+                  class="btn btn-secondary btn-lg h-100 rounded-0"
+                  href={`/page/${prevPageNumber}`}
+                >
+                  {"<"}
+                </a>
+              )
+            }
+          </div>
+          <img
+            class="main-image"
+            src={`/img/page_${pageNumber}.png`}
+            alt={page.line}
+          />
+          <div>
+            {
+              nextPageNumber && (
+                <a
+                  class="btn btn-secondary btn-lg h-100 rounded-0"
+                  href={`/page/${nextPageNumber}`}
+                >
+                  {">"}
+                </a>
+              )
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 </Layout>
 
+<style>
+  .main-image {
+    max-width: 100%;
+    max-height: calc(100vh - 60px);
+  }
+</style>
