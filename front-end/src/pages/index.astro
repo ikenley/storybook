@@ -1,0 +1,32 @@
+---
+import Layout from "../layouts/Layout.astro";
+import storyConfig from "../story_config.json";
+---
+
+<Layout title={storyConfig.cover.title}>
+  <main>
+    <div class="container d-flex justify-content-center">
+      <div>
+        <h1 class="text-center">{storyConfig.cover.title}</h1>
+        <img
+          class="main-image"
+          src={`${import.meta.env.BASE_URL}/img/cover.png`}
+          alt={storyConfig.cover.title}
+        />
+        <div>
+          <a
+            class="btn btn-secondary btn-lg rounded-0 w-100"
+            href={`${import.meta.env.BASE_URL}/page/1`}>{">"}</a
+          >
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .main-image {
+    max-width: 100%;
+    max-height: calc(100vh - 120px);
+  }
+</style>
