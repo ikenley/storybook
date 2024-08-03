@@ -20,6 +20,9 @@ if (!page) {
 }
 
 const prevPageNumber = pageNumberInt > 1 ? pageNumberInt - 1 : null;
+const prevUrl = prevPageNumber
+  ? `${import.meta.env.BASE_URL}/page/${prevPageNumber}`
+  : `${import.meta.env.BASE_URL}/`;
 
 const maxPageNumber =
   storyConfig.pages[storyConfig.pages.length - 1].pageNumber;
@@ -33,16 +36,12 @@ const nextPageNumber = pageNumberInt < maxPageNumber ? pageNumberInt + 1 : null;
         <h1 class="text-center">{page.line}</h1>
         <div class="d-flex">
           <div>
-            {
-              prevPageNumber && (
-                <a
-                  class="btn btn-secondary btn-lg h-100 rounded-0"
-                  href={`${import.meta.env.BASE_URL}/page/${prevPageNumber}`}
-                >
-                  {"<"}
-                </a>
-              )
-            }
+            <a
+              class="btn btn-secondary btn-lg h-100 rounded-0 d-none d-lg-block"
+              href={prevUrl}
+            >
+              {"<"}
+            </a>
           </div>
           <img
             class="main-image"
@@ -53,7 +52,7 @@ const nextPageNumber = pageNumberInt < maxPageNumber ? pageNumberInt + 1 : null;
             {
               nextPageNumber && (
                 <a
-                  class="btn btn-secondary btn-lg h-100 rounded-0"
+                  class="btn btn-secondary btn-lg h-100 rounded-0 d-none d-lg-block"
                   href={`${import.meta.env.BASE_URL}/page/${nextPageNumber}`}
                 >
                   {">"}
@@ -61,6 +60,25 @@ const nextPageNumber = pageNumberInt < maxPageNumber ? pageNumberInt + 1 : null;
               )
             }
           </div>
+        </div>
+        <div class="row gx-1 d-flex d-lg-none">
+          <div class="col">
+            <a class="btn btn-secondary btn-lg rounded-0 w-100" href={prevUrl}>
+              {"<"}
+            </a>
+          </div>
+          {
+            nextPageNumber && (
+              <div class="col">
+                <a
+                  class="btn btn-secondary btn-lg rounded-0 w-100"
+                  href={`${import.meta.env.BASE_URL}/page/${nextPageNumber}`}
+                >
+                  {">"}
+                </a>
+              </div>
+            )
+          }
         </div>
       </div>
     </div>
