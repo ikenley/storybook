@@ -3,7 +3,7 @@ import { writeFile } from "fs/promises";
 import * as path from "path";
 import { InvokeModelCommand } from "@aws-sdk/client-bedrock-runtime";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { getS3DatePrefix } from "./s3Util.mjs";
+import { getS3DatePrefix } from "./s3Util.js";
 
 export default class ImageGeneratorService {
   constructor(config, bedrockRuntimeClient, s3Client) {

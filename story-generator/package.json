@@ -11,7 +11,7 @@
     "start": "nodemon",
     "test": "jest --detectOpenHandles",
     "test-coverage": "jest --coverage",
-    "test-invoke": "ts-node --transpile-only ./src/test-invoke.ts",
+    "test-lambda": "ts-node --transpile-only ./src/local.ts",
     "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
     "clean": "rm -rf dist build",
     "ts-node": "ts-node"
@@ -22,12 +22,17 @@
     "type": "git",
     "url": "https://github.com/ikenley/storybook"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.623.0",
+    "@aws-sdk/client-s3": "^3.623.0"
+  },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.142",
     "@types/jest": "^27.4.1",
     "@types/node": "^17.0.45",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.12.1",
+    "dotenv": "^16.4.5",
     "eslint": "^8.9.0",
     "jest": "^27.5.1",
     "nodemon": "^2.0.20",
