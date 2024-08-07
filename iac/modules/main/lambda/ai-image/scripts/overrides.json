@@ -1,8 +1,0 @@
-{
-  "containerOverrides": [
-    {
-      "name": "ai-image",
-      "command": ["generate-image", "--prompt", "A house in the woods in the style of Hopper"]
-    }
-  ]
-}

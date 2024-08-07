@@ -7,3 +7,13 @@ Asyncronus task runner for creating storybooks. An AWS Step Function will call a
 3. ECS Task to generate AI images. It will then write the images and a configuration JSON file to S3
 4. ECS Task to build an Astro static front-end and deploy it to S3
 5. Lambda function to send confirmation email with link to static "storybook" website (hosted on Cloudfront CDN)
+
+---
+
+## Manually Deploying
+
+Ordinarily you'd use an automated, cloud-based CI/CD system (e.g. CodePipeline). But if you're in a hurry or trying to save a buck...
+
+```
+./scripts/docker_push_lambda.sh 1
+```
