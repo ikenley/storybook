@@ -8,7 +8,7 @@ import {
   SendTaskFailureCommand,
   SFNClient,
 } from "@aws-sdk/client-sfn";
-import { getConfigOptions } from "./config/ConfigOptions.mjs";
+import { getConfigOptions } from "./config/ConfigOptions.js";
 import ImageGeneratorService from "./ai/ImageGeneratorService.mjs";
 
 // Set the NODE_ENV to 'development' by default
