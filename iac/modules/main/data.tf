@@ -46,3 +46,12 @@ data "aws_ssm_parameter" "static_s3_bucket_arn" {
 data "aws_ssm_parameter" "static_s3_bucket_name" {
   name = "${local.static_output_prefix}/bucket_id"
 }
+
+# Manual Approve Lambda
+data "aws_ssm_parameter" "manual_approval_api_gateway_invoke_url" {
+  name = "${local.core_output_prefix}/manual-approve/api_gateway_invoke_url"
+}
+
+data "aws_ssm_parameter" "manual_approval_send_lambda_function_arn" {
+  name = "${local.core_output_prefix}/manual-approve/send_lambda_function_arn"
+}

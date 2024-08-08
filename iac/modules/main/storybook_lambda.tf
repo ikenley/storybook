@@ -6,7 +6,7 @@ locals {
   storybook_lambda_id = "${local.id}-lambda"
 }
 
-resource "aws_ecr_repository" "ai_image_task" {
+resource "aws_ecr_repository" "ai_image_task" { # TODO change to storybook_lambda
   name                 = local.storybook_lambda_id
   image_tag_mutability = "IMMUTABLE"
 
@@ -50,11 +50,6 @@ resource "aws_lambda_function" "storybook_lambda" {
       image_uri
     ]
   }
-
-  #   depends_on = [
-  #     aws_iam_role_policy_attachment.lambda_logs,
-  #     aws_cloudwatch_log_group.example,
-  #   ]
 }
 
 resource "aws_iam_role" "storybook_lambda" {
@@ -109,6 +104,35 @@ resource "aws_iam_policy" "storybook_lambda" {
           "ec2:DeleteNetworkInterface"
         ],
         "Resource" : "*"
+      },
+      {
+        "Sid" : "ListObjectsInBucket",
+        "Effect" : "Allow",
+        "Action" : ["s3:ListBucket"],
+        "Resource" : [
+          "${data.aws_ssm_parameter.data_lake_s3_bucket_arn.value}",
+          "${data.aws_ssm_parameter.static_s3_bucket_arn.value}"
+        ]
+      },
+      {
+        "Sid" : "S3ReadWrite",
+        "Effect" : "Allow",
+        "Action" : [
+          "s3:GetObject",
+          "s3:PutObject"
+        ],
+        "Resource" : [
+          "${data.aws_ssm_parameter.data_lake_s3_bucket_arn.value}/${local.id}/*",
+          "${data.aws_ssm_parameter.static_s3_bucket_arn.value}/${local.id}/*"
+        ]
+      },
+      {
+        Sid = "Bedrock"
+        Action = [
+          "bedrock:InvokeModel"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
       }
     ]
   })
