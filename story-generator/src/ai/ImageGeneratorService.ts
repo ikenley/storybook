@@ -1,22 +1,47 @@
-import { readFileSync } from "fs";
 import { writeFile } from "fs/promises";
 import * as path from "path";
-import { InvokeModelCommand } from "@aws-sdk/client-bedrock-runtime";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { getS3DatePrefix } from "./s3Util.js";
+import {
+  BedrockRuntimeClient,
+  InvokeModelCommand,
+} from "@aws-sdk/client-bedrock-runtime";
+import FileService from "..//s3/FileService";
+
+export type StoryBookPage = {
+  pageNumber: number;
+  line: string;
+  imgSrc: string;
+};
+
+export type StorybookConfig = {
+  cover: StoryBookPage;
+  pages: StoryBookPage[];
+};
 
 export default class ImageGeneratorService {
-  constructor(config, bedrockRuntimeClient, s3Client) {
-    this.config = config;
+  private bedrockRuntimeClient: BedrockRuntimeClient;
+  private fileService: FileService;
+
+  constructor(
+    bedrockRuntimeClient: BedrockRuntimeClient,
+    fileService: FileService
+  ) {
     this.bedrockRuntimeClient = bedrockRuntimeClient;
-    this.s3Client = s3Client;
+    this.fileService = fileService;
   }
 
   /** Generate an image based on a prompt, save it to S3, and send image link. */
-  async generate(imageId, prompt) {
-    const filePath = await this.createImage(imageId, prompt);
-
-    const s3Result = await this.uploadToS3(imageId, filePath);
+  public async generate(
+    jobId: string,
+    title: string,
+    description: string,
+    linesS3Bucket: string,
+    linesS3Key: string
+  ): Promise<StorybookConfig> {
+    // Get lines from S3
+    // For the title + each line
+    // Generate an image
+    // Upload image to S3
+    // Upload storyBookConfig to S3
 
     return s3Result;
   }
@@ -48,26 +73,5 @@ export default class ImageGeneratorService {
       console.error("Error parsing JSON:", JSON.stringify(error));
       throw new Error(error);
     }
-  }
-
-  async uploadToS3(imageId, filePath) {
-    const fileContent = readFileSync(filePath); // This is inefficient, but works for small images
-    const datePrefix = getS3DatePrefix();
-    const s3Bucket = this.config.s3.bucketName;
-    const s3Key = `${this.config.s3.keyPrefix}/${datePrefix}/${imageId}.png`;
-    const input = {
-      Body: fileContent,
-      Bucket: s3Bucket,
-      Key: s3Key,
-    };
-    console.log(
-      "uploadToS3",
-      JSON.stringify({ bucket: input.Bucket, s3Key: input.Key })
-    );
-    const command = new PutObjectCommand(input);
-    await this.s3Client.send(command);
-
-    const s3Uri = `s3://${s3Bucket}/${s3Key}`;
-    return { s3Bucket, s3Key, s3Uri };
   }
 }
