@@ -5,7 +5,7 @@ import { ConfigOptions, getConfigOptions } from "./config/ConfigOptions";
 import TextGenerator, { TextGeneratorResponse } from "./ai/TextGenerator";
 import FileService from "./s3/FileService";
 import { BedrockRuntimeClient } from "@aws-sdk/client-bedrock-runtime";
-import ImageGeneratorService from "./ai/TextGenerator";
+import ImageGeneratorService from "./ai/ImageGeneratorService";
 
 export const handler: Handler = async (event, _context, callback) => {
   console.log(`event= ${JSON.stringify(event)}`);
@@ -22,7 +22,7 @@ export const handler: Handler = async (event, _context, callback) => {
     const title = event.Title;
     const description = event.Description;
     const linesS3Bucket = event.LinesS3Bucket;
-    const linesS3Key = event.linesS3Key;
+    const linesS3Key = event.LinesS3Key;
     result = await generateImages(
       config,
       jobId,
@@ -75,6 +75,7 @@ const generateImages = async (
 
   const fileService = new FileService(config, s3Client);
   const imageGenerator = new ImageGeneratorService(
+    config,
     bedrockRuntimeClient,
     fileService
   );

@@ -15,6 +15,7 @@ const main = async () => {
 
   const event = {
     Command: "GenerateImages",
+    JobId: "72f5fe55-5d3f-47e1-936e-bf857b8e6aee",
     Title: "The fish that learned to fly",
     Description: `a fish that builds an airplane and flies through a rainbow.`,
     LinesS3Bucket: process.env.DATA_LAKE_S3_BUCKET_NAME!,

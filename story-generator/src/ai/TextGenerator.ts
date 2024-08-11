@@ -34,9 +34,12 @@ export default class ImageGeneratorService {
 
     const fileId = randomUUID();
 
-    const filePath = await this.fileService.writeToJsonFile(fileId, lines);
+    const filePath = await this.fileService.writeToJsonFile(lines, fileId);
 
-    const s3Result = await this.fileService.uploadToS3(fileId, filePath);
+    const s3Result = await this.fileService.uploadToS3(
+      filePath,
+      `${fileId}-text.json`
+    );
 
     //return s3Result;
     return { jobId, ...s3Result };
