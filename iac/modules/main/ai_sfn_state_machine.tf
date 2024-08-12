@@ -76,10 +76,45 @@ resource "aws_sfn_state_machine" "step_fn" {
     },
     "ApprovedPassState": {
       "Type": "Pass",
-      "Next": "SnsPublish"
+      "Next": "CreateImage"
     },
     "RejectedPassState": {
       "Type": "Pass",
+      "Next": "SnsPublish"
+    },
+    "CreateImage": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${aws_lambda_function.storybook_lambda.arn}:$LATEST",
+        "Payload": {
+          "Command": "GenerateImages",
+          "JobId.$": "$.CreateText.JobId",
+          "Title.$": "$$.Execution.Input.Title",
+          "Description.$": "$$.Execution.Input.Description",
+          "LinesS3Bucket.$": "$.CreateText.S3Bucket",
+          "LinesS3Key.$": "$.CreateText.S3Key"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": "$.CreateImage",
+      "ResultSelector": {
+        "S3Bucket.$": "$.Payload.s3Bucket",
+        "S3Key.$": "$.Payload.s3Key",
+        "S3Uri.$": "$.Payload.s3Uri"
+      },
       "Next": "SnsPublish"
     },
     "SnsPublish": {

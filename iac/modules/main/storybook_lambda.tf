@@ -21,15 +21,15 @@ resource "aws_lambda_function" "storybook_lambda" {
   role          = aws_iam_role.storybook_lambda.arn
 
   # Placeholder image uri
-  image_uri    = "924586450630.dkr.ecr.us-east-1.amazonaws.com/ik-dev-storybook-lambda:2"
+  image_uri    = "924586450630.dkr.ecr.us-east-1.amazonaws.com/ik-dev-storybook-lambda:5"
   package_type = "Image"
 
   # image_config {
   #   command = var.lambda_image_command
   # }
 
-  timeout     = 30
-  memory_size = 256
+  timeout     = 120
+  memory_size = 2048
 
   environment {
     variables = {
@@ -37,6 +37,7 @@ resource "aws_lambda_function" "storybook_lambda" {
       DATA_LAKE_S3_BUCKET_KEY_PREFIX = local.id
       STATIC_S3_BUCKET_NAME          = data.aws_ssm_parameter.static_s3_bucket_name.value
       STATIC_S3_BUCKET_KEY_PREFIX    = local.id
+      CDN_DOMAIN                     = data.aws_ssm_parameter.static_s3_bucket_name.value
     }
   }
 
@@ -45,11 +46,11 @@ resource "aws_lambda_function" "storybook_lambda" {
     security_group_ids = [aws_security_group.storybook_lambda.id]
   }
 
-  lifecycle {
-    ignore_changes = [
-      image_uri
-    ]
-  }
+  # lifecycle {
+  #   ignore_changes = [
+  #     image_uri
+  #   ]
+  # }
 }
 
 resource "aws_iam_role" "storybook_lambda" {

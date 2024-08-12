@@ -131,7 +131,7 @@ export default class ImageGeneratorService {
     const imageId = randomUUID();
     const input = {
       // InvokeModelRequest
-      body: `{"text_prompts":[{"text":"${prompt}"}, {"text": "Text", "weight": -1}],"cfg_scale":10,"seed":0,"steps":50}`,
+      body: `{"text_prompts":[{"text":"${prompt}"}, {"text": "Text or comic book style", "weight": -1}],"cfg_scale":10,"seed":0,"steps":50}`,
       contentType: "application/json",
       accept: "*/*",
       modelId: "stability.stable-diffusion-xl-v1",
