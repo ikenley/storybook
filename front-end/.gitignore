@@ -25,3 +25,4 @@ pnpm-debug.log*
 
 
 story_config.json
+**/story_config.json
