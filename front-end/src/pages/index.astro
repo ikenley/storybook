@@ -3,15 +3,15 @@ import Layout from "../layouts/Layout.astro";
 import storyConfig from "../story_config.json";
 ---
 
-<Layout title={storyConfig.cover.title}>
+<Layout title={storyConfig.cover.line}>
   <main>
     <div class="container d-flex justify-content-center">
       <div>
-        <h1 class="text-center">{storyConfig.cover.title}</h1>
+        <h1 class="text-center">{storyConfig.cover.line}</h1>
         <img
           class="main-image"
-          src={`${import.meta.env.BASE_URL}/img/cover.png`}
-          alt={storyConfig.cover.title}
+          src={storyConfig.cover.imgSrc}
+          alt={storyConfig.cover.line}
         />
         <div>
           <a
