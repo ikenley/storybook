@@ -20,3 +20,8 @@ aws cloudfront create-invalidation --distribution-id ESXOJUXNNU11Y --paths ${BAS
 
 echo "Deployment complete"
 echo "Site is live at https://${CDN_DOMAIN}${BASE_URL}/"
+
+echo "Sending Step Function Task Success"
+TASK_TOKEN="$3"
+echo "TASK_TOKEN=$TASK_TOKEN"
+aws stepfunctions send-task-success --task-token $TASK_TOKEN --output '{"status": "success"}'

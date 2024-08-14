@@ -38,6 +38,7 @@ resource "aws_sfn_state_machine" "step_fn" {
       "ResultPath": "$.CreateText",
       "ResultSelector": {
         "JobId.$": "$.Payload.jobId",
+        "BaseUrl.$": "$.Payload.baseUrl",
         "S3Bucket.$": "$.Payload.s3Bucket",
         "S3Key.$": "$.Payload.s3Key",
         "S3Uri.$": "$.Payload.s3Uri"
@@ -115,6 +116,40 @@ resource "aws_sfn_state_machine" "step_fn" {
         "S3Key.$": "$.Payload.s3Key",
         "S3Uri.$": "$.Payload.s3Uri"
       },
+      "Next": "GenerateStaticSite"
+    },
+    "GenerateStaticSite": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::ecs:runTask.waitForTaskToken",
+      "Parameters": {
+        "LaunchType": "FARGATE",
+        "Cluster": "arn:aws:ecs:us-east-1:924586450630:cluster/main",
+        "TaskDefinition": "${aws_ecs_task_definition.storybook_task.arn}",
+        "NetworkConfiguration": {
+          "AwsvpcConfiguration": {
+            "Subnets": ${jsonencode(local.private_subnets)},
+            "SecurityGroups": [
+              "${aws_security_group.storybook_task.id}"
+            ],
+            "AssignPublicIp": "DISABLED"
+          }
+        },
+        "Overrides": {
+          "ContainerOverrides": [
+            {
+              "Name": "storybook-ssg",
+              "Command.$": "States.Array('$.CreateImage.S3Uri', '--task-token', $$.Task.Token)",
+              "Environment": [
+                {
+                  "Name": "BASE_URL",
+                  "Value": "$.CreateText.BaseUrl"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "ResultPath": "$.GenerateStaticSite",
       "Next": "SnsPublish"
     },
     "SnsPublish": {
@@ -137,37 +172,6 @@ EOF
     level                  = "ALL"
   }
 }
-
-/*
-"GenerateImage": {
-      "Type": "Task",
-      "Resource": "arn:aws:states:::ecs:runTask.waitForTaskToken",
-      "Parameters": {
-        "LaunchType": "FARGATE",
-        "Cluster": "arn:aws:ecs:us-east-1:924586450630:cluster/main",
-        "TaskDefinition": "${aws_ecs_task_definition.ai_image_task.arn}",
-        "NetworkConfiguration": {
-          "AwsvpcConfiguration": {
-            "Subnets": ${jsonencode(local.private_subnets)},
-            "SecurityGroups": [
-              "${aws_security_group.ai_image_task.id}"
-            ],
-            "AssignPublicIp": "DISABLED"
-          }
-        },
-        "Overrides": {
-          "ContainerOverrides": [
-            {
-              "Name": "ai-image",
-              "Command.$": "States.Array('generate-image', '--id', $.GetMetadata.ImageId, '--prompt', $$.Execution.Input.prompt, '--task-token', $$.Task.Token)"
-            }
-          ]
-        }
-      },
-      "ResultPath": "$.GenerateImage",
-      "Next": "CreateTags"
-    },
-*/
 
 resource "aws_cloudwatch_log_group" "step_fn" {
   name = local.id
@@ -251,16 +255,16 @@ resource "aws_iam_policy" "step_fn" {
           "${data.aws_ssm_parameter.manual_approval_send_lambda_function_arn.value}:*"
         ]
       },
-      #   {
-      #     "Sid" : "EcsRunTask",
-      #     "Effect" : "Allow",
-      #     "Action" : [
-      #       "ecs:RunTask"
-      #     ],
-      #     "Resource" : [
-      #       "${aws_ecs_task_definition.ai_image_task.arn_without_revision}:*"
-      #     ]
-      #   },
+      {
+        "Sid" : "EcsRunTask",
+        "Effect" : "Allow",
+        "Action" : [
+          "ecs:RunTask"
+        ],
+        "Resource" : [
+          "${aws_ecs_task_definition.storybook_task.arn_without_revision}:*"
+        ]
+      },
       {
         "Sid" : "EcsDescribeTasks",
         "Effect" : "Allow",
