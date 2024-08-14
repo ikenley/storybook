@@ -1,29 +1,31 @@
-# Docker image for Lambda entrypoint
-# https://docs.aws.amazon.com/lambda/latest/dg/nodejs-image.html
+# syntax=docker/dockerfile:1
 
-FROM public.ecr.aws/lambda/nodejs:20 as builder
+FROM node:22 AS build
 
-WORKDIR /usr/app
+# Install git, SSH, and other utilities
+RUN apt-get update && apt-get install -y jq
 
-# Install dependencies
+# Install AWS CLI v2
+# https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html
+RUN curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o /tmp/awscliv2.zip \
+    && unzip -q /tmp/awscliv2.zip -d /opt \
+    && /opt/aws/install --update -i /usr/local/aws-cli -b /usr/local/bin \
+    && rm /tmp/awscliv2.zip \
+    && rm -rf /opt/aws \
+    && aws --version
+
+WORKDIR /usr/src/app
+
+# Install app dependencies
 COPY package*.json ./
-RUN npm ci
+RUN npm install
+# If you are building your code for production
+#RUN npm ci --only=production
 
-# Bundle app source code
-COPY . ./
-RUN npm run build 
+# Copy "source code"
+COPY . .
 
-# Minimal lambda runtime
-FROM public.ecr.aws/lambda/nodejs:20 as runtime 
+ARG VERSION
+ENV VERSION=$VERSION
 
-WORKDIR ${LAMBDA_TASK_ROOT}
-
-# Install runtime dependencies
-COPY --from=builder /usr/app/package*.json ./
-RUN npm ci && npm prune --omit=dev
-
-COPY --from=builder /usr/app/dist ./dist
-
-ARG APP_VERSION
-ENV APP_VERSION=$APP_VERSION
-CMD ["dist/lambda_function.handler"]
+ENTRYPOINT ["/bin/bash", "/usr/src/app/scripts/generate_site.sh" ]
