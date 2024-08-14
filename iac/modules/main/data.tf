@@ -47,6 +47,10 @@ data "aws_ssm_parameter" "static_s3_bucket_name" {
   name = "${local.static_output_prefix}/bucket_id"
 }
 
+data "aws_ssm_parameter" "cdn_distribution_id" {
+  name = "${local.static_output_prefix}/cdn_distribution_id"
+}
+
 # Manual Approve Lambda
 data "aws_ssm_parameter" "manual_approval_api_gateway_invoke_url" {
   name = "${local.core_output_prefix}/manual-approve/api_gateway_invoke_url"

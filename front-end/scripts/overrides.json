@@ -1,8 +1,16 @@
 {
   "containerOverrides": [
     {
-      "name": "ai-image",
-      "command": ["generate-image", "--prompt", "A house in the woods in the style of Hopper"]
+      "name": "storybook-ssg",
+      "command": [
+        "s3://924586450630-data-lake/ik-dev-storybook/2024-08-11/18b48ef3-9409-470a-ad6f-d1a7c775731d-story-config.json"
+      ],
+      "environment": [
+        {
+          "name": "BASE_URL",
+          "value": "/storybook/the-dog-in-the-circle"
+        }
+      ]
     }
   ]
 }
