@@ -1,0 +1,31 @@
+{
+  "baseUrl": "/storybook/the-dog-in-the-circle",
+  "cover": {
+    "pageNumber": 0,
+    "line": "The dog in the circle",
+    "imgSrc": "https://static.ikenley.com/ik-dev-storybook/2024-08-11/cdcb900d-762a-4cf4-b2f1-c97ca80c343e/The-dog-in-the-circle.png"
+  },
+  "pages": [
+    {
+      "pageNumber": 1,
+      "line": "Round and round, a furry pup spins,",
+      "imgSrc": "https://static.ikenley.com/ik-dev-storybook/2024-08-11/cdcb900d-762a-4cf4-b2f1-c97ca80c343e/Round-and-round-a-furry-pup-spins.png"
+    },
+    {
+      "pageNumber": 2,
+      "line": "In a circle drawn with chalk so thin.",
+      "imgSrc": "https://static.ikenley.com/ik-dev-storybook/2024-08-11/cdcb900d-762a-4cf4-b2f1-c97ca80c343e/In-a-circle-drawn-with-chalk-so-thin.png"
+    },
+    {
+      "pageNumber": 3,
+      "line": "He lifts his voice, a joyful sound,",
+      "imgSrc": "https://static.ikenley.com/ik-dev-storybook/2024-08-11/cdcb900d-762a-4cf4-b2f1-c97ca80c343e/He-lifts-his-voice-a-joyful-sound.png"
+    },
+    {
+      "pageNumber": 4,
+      "line": "His wonderful song fills the playground.",
+      "imgSrc": "https://static.ikenley.com/ik-dev-storybook/2024-08-11/cdcb900d-762a-4cf4-b2f1-c97ca80c343e/His-wonderful-song-fills-the-playground.png"
+    }
+  ]
+}
+

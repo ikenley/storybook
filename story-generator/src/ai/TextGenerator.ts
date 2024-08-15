@@ -4,9 +4,11 @@ import {
   InvokeModelCommand,
 } from "@aws-sdk/client-bedrock-runtime";
 import FileService from "src/s3/FileService";
+import * as textUtil from "./textUtil";
 
 export type TextGeneratorResponse = {
   jobId: string;
+  baseUrl: string;
   s3Bucket: string;
   s3Key: string;
   s3Uri: string;
@@ -41,8 +43,10 @@ export default class ImageGeneratorService {
       `${fileId}-text.json`
     );
 
+    const baseUrl = textUtil.getBaseUrl(title);
+
     //return s3Result;
-    return { jobId, ...s3Result };
+    return { jobId, baseUrl, ...s3Result };
   }
 
   /** Generate the text for the story.
