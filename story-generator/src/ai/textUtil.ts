@@ -16,3 +16,13 @@ export const getFileName = (line: string) => {
   const sanitizedLine = lineWithoutSpaces.replace(/[^a-zA-Z0-9\-]/g, "");
   return `${sanitizedLine}.png`;
 };
+
+/** Generates the baseUrl to be used as the static site URL prefix.
+ * Example: (title: "The Great Adventure") => "/storybook/the-great-adventure"
+ */
+export const getBaseUrl = (title: string) => {
+  const lineWithoutSpaces = title.replace(/\s/g, "-");
+  const sanitizedLine = lineWithoutSpaces.replace(/[^a-zA-Z0-9\-]/g, "");
+  const lowerCaseLine = sanitizedLine.toLowerCase();
+  return `/storybook/${lowerCaseLine}`;
+};
