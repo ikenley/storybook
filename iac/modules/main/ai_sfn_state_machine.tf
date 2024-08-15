@@ -138,11 +138,11 @@ resource "aws_sfn_state_machine" "step_fn" {
           "ContainerOverrides": [
             {
               "Name": "storybook-ssg",
-              "Command.$": "States.Array('$.CreateImage.S3Uri', '--task-token', $$.Task.Token)",
+              "Command.$": "States.Array($.CreateImage.S3Uri, '--task-token', $$.Task.Token)",
               "Environment": [
                 {
                   "Name": "BASE_URL",
-                  "Value": "$.CreateText.BaseUrl"
+                  "Value.$": "$.CreateText.BaseUrl"
                 }
               ]
             }
@@ -286,17 +286,17 @@ resource "aws_iam_policy" "step_fn" {
       #       "arn:aws:events:us-east-1:924586450630:rule/StepFunctionsGetEventsForECSTaskRule"
       #     ]
       #   },
-      #   {
-      #     "Sid" : "PassRoleTaskExecution",
-      #     "Effect" : "Allow",
-      #     "Action" : [
-      #       "iam:PassRole"
-      #     ],
-      #     "Resource" : [
-      #       "${aws_iam_role.ai_image_task_execution_role.arn}",
-      #       "${aws_iam_role.ai_image_task_role.arn}"
-      #     ]
-      #   },
+      {
+        "Sid" : "PassRoleTaskExecution",
+        "Effect" : "Allow",
+        "Action" : [
+          "iam:PassRole"
+        ],
+        "Resource" : [
+          "${aws_iam_role.storybook_task_execution_role.arn}",
+          "${aws_iam_role.storybook_task_role.arn}"
+        ]
+      },
       {
         "Sid" : "Sns",
         "Effect" : "Allow",

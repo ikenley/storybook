@@ -7,7 +7,6 @@ echo "CONFIG_S3_URI=$CONFIG_S3_URI"
 aws s3 cp "$CONFIG_S3_URI" ./src/story_config.json
 
 echo "Loading environment variables"
-BASE_URL=$(cat "./src/story_config.json" | jq -r '.baseUrl')
 export BASE_URL=$BASE_URL
 echo "BASE_URL=$BASE_URL"
 
@@ -19,9 +18,10 @@ aws s3 cp dist s3://${CDN_DOMAIN}${BASE_URL}/ --recursive
 aws cloudfront create-invalidation --distribution-id ESXOJUXNNU11Y --paths ${BASE_URL}/*
 
 echo "Deployment complete"
-echo "Site is live at https://${CDN_DOMAIN}${BASE_URL}/"
+SITE_URL="https://${CDN_DOMAIN}${BASE_URL}/"
+echo "Site is live at $SITE_URL"
 
 echo "Sending Step Function Task Success"
 TASK_TOKEN="$3"
 echo "TASK_TOKEN=$TASK_TOKEN"
-aws stepfunctions send-task-success --task-token $TASK_TOKEN --output '{"status": "success"}'
+aws stepfunctions send-task-success --task-token $TASK_TOKEN --task-output "{\"SiteUrl\": \"$SITE_URL\"}"

@@ -19,7 +19,7 @@ resource "aws_ecs_task_definition" "storybook_task" {
   container_definitions = jsonencode([
     {
       name      = "storybook-ssg"
-      image     = "${aws_ecr_repository.storybook_task.repository_url}:2"
+      image     = "${aws_ecr_repository.storybook_task.repository_url}:6"
       cpu       = 1024
       memory    = 2048
       essential = true
@@ -156,6 +156,14 @@ resource "aws_iam_policy" "storybook_task_role" {
         "Effect" : "Allow",
         "Action" : [
           "cloudfront:CreateInvalidation"
+        ],
+        "Resource" : "*"
+      },
+      {
+        "Sid" : "SendTaskSuccess",
+        "Effect" : "Allow",
+        "Action" : [
+          "states:SendTaskSuccess"
         ],
         "Resource" : "*"
       }
