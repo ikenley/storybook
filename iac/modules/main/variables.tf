@@ -25,8 +25,10 @@ variable "is_prod" {
 # variable "codestar_connection_arn" {}
 
 # SES
-variable "ses_email_addresses" {
+variable "ses_email_address" {
+  type = string
+}
+variable "sns_email_addresses" {
   type = set(string)
 }
-# variable "ses_email_arn" {}
 

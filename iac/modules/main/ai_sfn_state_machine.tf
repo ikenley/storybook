@@ -150,6 +150,37 @@ resource "aws_sfn_state_machine" "step_fn" {
         }
       },
       "ResultPath": "$.GenerateStaticSite",
+      "Next": "SendConfirmationEmail"
+    },
+    "SendConfirmationEmail": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${aws_lambda_function.storybook_lambda.arn}:$LATEST",
+        "Payload": {
+          "Command": "SendConfirmationEmail",
+          "Title.$": "$$.Execution.Input.Title",
+          "ToEmailAddress.$": "$$.Execution.Input.UserEmailAddress",
+          "SiteUrl.$": "$.GenerateStaticSite.SiteUrl"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": "$.SendConfirmationEmail",
+      "ResultSelector": {
+        "Status.$": "$.Payload.status"
+      },
       "Next": "SnsPublish"
     },
     "SnsPublish": {
@@ -317,7 +348,7 @@ resource "aws_sns_topic" "step_fn" {
 
 # TODO make this a for each
 resource "aws_sns_topic_subscription" "step_fn" {
-  for_each = var.ses_email_addresses
+  for_each = var.sns_email_addresses
 
   topic_arn = aws_sns_topic.step_fn.arn
   protocol  = "email"
