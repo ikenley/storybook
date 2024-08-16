@@ -21,7 +21,7 @@ resource "aws_lambda_function" "storybook_lambda" {
   role          = aws_iam_role.storybook_lambda.arn
 
   # Placeholder image uri
-  image_uri    = "924586450630.dkr.ecr.us-east-1.amazonaws.com/ik-dev-storybook-lambda:6"
+  image_uri    = "924586450630.dkr.ecr.us-east-1.amazonaws.com/ik-dev-storybook-lambda:7"
   package_type = "Image"
 
   # image_config {
@@ -38,6 +38,7 @@ resource "aws_lambda_function" "storybook_lambda" {
       STATIC_S3_BUCKET_NAME          = data.aws_ssm_parameter.static_s3_bucket_name.value
       STATIC_S3_BUCKET_KEY_PREFIX    = local.id
       CDN_DOMAIN                     = data.aws_ssm_parameter.static_s3_bucket_name.value
+      FROM_EMAIL_ADDRESS             = var.ses_email_address
     }
   }
 
@@ -133,6 +134,12 @@ resource "aws_iam_policy" "storybook_lambda" {
           "bedrock:InvokeModel"
         ]
         Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+        Sid : "AllowSendEmail",
+        Effect   = "Allow"
+        Action   = ["ses:SendEmail"]
         Resource = "*"
       }
     ]

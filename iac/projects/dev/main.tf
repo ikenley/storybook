@@ -26,10 +26,11 @@ provider "aws" {
 module "main" {
   source = "../../modules/main"
 
-  namespace    = "ik"
-  env          = "dev"
-  is_prod      = false
+  namespace = "ik"
+  env       = "dev"
+  is_prod   = false
 
-  ses_email_addresses = toset([var.ses_email_address])
+  ses_email_address   = var.ses_email_address
+  sns_email_addresses = toset([var.sns_email_address])
 
 }

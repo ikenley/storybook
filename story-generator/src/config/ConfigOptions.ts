@@ -8,6 +8,7 @@ export type ConfigOptions = {
     region: string;
   };
   cdnDomain: string;
+  fromEmailAddress: string;
   s3: {
     dataLake: S3Config;
     static: S3Config;
@@ -24,6 +25,7 @@ export const getConfigOptions = (): ConfigOptions => {
       region: process.env.AWS_REGION!,
     },
     cdnDomain: process.env.CDN_DOMAIN!,
+    fromEmailAddress: process.env.FROM_EMAIL_ADDRESS!,
     s3: {
       dataLake: {
         bucketName: process.env.DATA_LAKE_S3_BUCKET_NAME!,
