@@ -21,7 +21,7 @@ resource "aws_lambda_function" "storybook_lambda" {
   role          = aws_iam_role.storybook_lambda.arn
 
   # Placeholder image uri
-  image_uri    = "924586450630.dkr.ecr.us-east-1.amazonaws.com/ik-dev-storybook-lambda:7"
+  image_uri    = "924586450630.dkr.ecr.us-east-1.amazonaws.com/ik-dev-storybook-lambda:8"
   package_type = "Image"
 
   # image_config {
