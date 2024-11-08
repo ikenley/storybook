@@ -147,6 +147,9 @@ export default class ImageGeneratorService {
     const command = new InvokeModelCommand(input);
     console.log("createImage", JSON.stringify({ imageId, prompt }));
     const response = await this.bedrockRuntimeClient.send(command);
+    // Wait 45 seconds to avoid service level limit
+    console.log("Waiting 45 seconds to avoid service account quota...");
+    await this.wait(45000);
 
     const blobAdapter = response.body;
     const textDecoder = new TextDecoder("utf-8");
@@ -178,5 +181,9 @@ export default class ImageGeneratorService {
     );
 
     return storyConfigS3;
+  }
+
+  private wait(milliseconds: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
   }
 }
