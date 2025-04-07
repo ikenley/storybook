@@ -1,7 +1,7 @@
 # Docker image for Lambda entrypoint
 # https://docs.aws.amazon.com/lambda/latest/dg/nodejs-image.html
 
-FROM public.ecr.aws/lambda/nodejs:20 AS builder
+FROM public.ecr.aws/lambda/nodejs:22 AS builder
 
 WORKDIR /usr/app
 
@@ -14,7 +14,7 @@ COPY . ./
 RUN npm run build 
 
 # Minimal lambda runtime
-FROM public.ecr.aws/lambda/nodejs:20 AS runtime 
+FROM public.ecr.aws/lambda/nodejs:22 AS runtime 
 
 WORKDIR ${LAMBDA_TASK_ROOT}
 
