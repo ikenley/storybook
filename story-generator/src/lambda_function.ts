@@ -23,6 +23,7 @@ export const handler: Handler = async (event, _context, callback) => {
     const jobId = event.JobId;
     const title = event.Title;
     const description = event.Description;
+    const artNote = event.ArtNote;
     const linesS3Bucket = event.LinesS3Bucket;
     const linesS3Key = event.LinesS3Key;
     result = await generateImages(
@@ -30,6 +31,7 @@ export const handler: Handler = async (event, _context, callback) => {
       jobId,
       title,
       description,
+      artNote,
       linesS3Bucket,
       linesS3Key
     );
@@ -75,6 +77,7 @@ const generateImages = async (
   jobId: string,
   title: string,
   description: string,
+  artNote: string,
   linesS3Bucket: string,
   linesS3Key: string
 ) => {
@@ -96,6 +99,7 @@ const generateImages = async (
     jobId,
     title,
     description,
+    artNote,
     linesS3Bucket,
     linesS3Key
   );
