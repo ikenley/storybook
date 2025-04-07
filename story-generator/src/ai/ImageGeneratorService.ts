@@ -132,24 +132,26 @@ export default class ImageGeneratorService {
     const input = {
       // InvokeModelRequest
       body: JSON.stringify({
-        text_prompts: [
-          { text: prompt },
-          { text: "Text or comic book style", weight: -1 },
-        ],
-        cfg_scale: 10,
-        seed: 0,
-        steps: 50,
+        taskType: "TEXT_IMAGE",
+        textToImageParams: { text: prompt },
+        imageGenerationConfig: {
+          numberOfImages: 1,
+          quality: "premium",
+          cfgScale: 8.0,
+          height: 1024,
+          width: 1024,
+        },
       }),
       contentType: "application/json",
       accept: "*/*",
-      modelId: "stability.stable-diffusion-xl-v1",
+      modelId: "amazon.nova-canvas-v1:0",
     };
     const command = new InvokeModelCommand(input);
     console.log("createImage", JSON.stringify({ imageId, prompt }));
     const response = await this.bedrockRuntimeClient.send(command);
-    // Wait 45 seconds to avoid service level limit
-    console.log("Waiting 45 seconds to avoid service account quota...");
-    await this.wait(45000);
+    // Wait 1 second to avoid service level limit
+    console.log("Waiting 5 seconds to avoid service account quota...");
+    await this.wait(1000);
 
     const blobAdapter = response.body;
     const textDecoder = new TextDecoder("utf-8");
@@ -157,7 +159,7 @@ export default class ImageGeneratorService {
 
     try {
       const parsedData = JSON.parse(jsonString);
-      const base64Data = parsedData.artifacts[0].base64;
+      const base64Data = parsedData.images[0];
       const filePath = path.join("/tmp", `${imageId}.png`);
       await writeFile(filePath, base64Data, { encoding: "base64" });
       return filePath;
