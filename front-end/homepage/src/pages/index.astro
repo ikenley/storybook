@@ -1,0 +1,39 @@
+---
+import Layout from "../layouts/Layout.astro";
+import homeConfig from "../home_config.json";
+
+/** Get URL-safe path based on title */
+export const getPath = (title: string) => {
+  const titleWithoutSpaces = title.replace(/\s/g, "-");
+  const path = titleWithoutSpaces.replace(/[^a-zA-Z0-9\-]/g, "");
+  return path;
+};
+
+/** Get list of titles + URL paths */
+const links = homeConfig.titles.map((t) => ({ title: t, path: getPath(t) }));
+---
+
+<Layout title="Storybook">
+  <main>
+    <div class="container d-flex justify-content-center">
+      <div>
+        <h1 class="text-center">Storybook</h1>
+        <div>
+          {
+            links.map((link) => (
+              <a
+                class="btn btn-secondary btn-lg rounded-0 w-100"
+                href={`${import.meta.env.BASE_URL}/${link.path}`}
+              >
+                {link.title}
+              </a>
+            ))
+          }
+        </div>
+        <a href="https://github.com/ikenley/storybook">Github</a>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style></style>
