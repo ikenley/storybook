@@ -93,6 +93,7 @@ resource "aws_sfn_state_machine" "step_fn" {
           "JobId.$": "$.CreateText.JobId",
           "Title.$": "$$.Execution.Input.Title",
           "Description.$": "$$.Execution.Input.Description",
+          "ArtNote.$": "$$.Execution.Input.ArtNote",
           "LinesS3Bucket.$": "$.CreateText.S3Bucket",
           "LinesS3Key.$": "$.CreateText.S3Key"
         }

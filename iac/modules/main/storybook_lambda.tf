@@ -8,7 +8,7 @@ locals {
 
 resource "aws_ecr_repository" "ai_image_task" { # TODO change to storybook_lambda
   name                 = local.storybook_lambda_id
-  image_tag_mutability = "IMMUTABLE"
+  image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
     scan_on_push = true
@@ -21,7 +21,7 @@ resource "aws_lambda_function" "storybook_lambda" {
   role          = aws_iam_role.storybook_lambda.arn
 
   # Placeholder image uri
-  image_uri    = "924586450630.dkr.ecr.us-east-1.amazonaws.com/ik-dev-storybook-lambda:16"
+  image_uri    = "924586450630.dkr.ecr.us-east-1.amazonaws.com/ik-dev-storybook-lambda:202504076"
   package_type = "Image"
 
   # image_config {

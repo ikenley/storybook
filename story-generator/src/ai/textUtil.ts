@@ -1,13 +1,14 @@
 export const createPrompt = (
   title: string,
   description: string,
+  artNote: string,
   line: string,
   isCover: boolean
 ): string => {
   if (isCover) {
-    return `Create the cover for a children's book titled '${title}'. The book is about ${description}.`;
+    return `Create the cover for a children's book titled '${title}'. The book is about ${description}. Do not include text in the image. ${artNote}`;
   }
-  return `Create the art for a page of a children's book titled '${title}'. The text for this page is: '${line}'.`;
+  return `Create the art for a page of a children's book titled '${title}'. This page should be about: '${line}'. Do not include text in the image. ${artNote}`;
 };
 
 /** Create URL-safe filename based on the line */

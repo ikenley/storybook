@@ -34,6 +34,7 @@ const main = async () => {
     Command: "GenerateImages",
     Description:
       "A clique of unicorns harass their comrade Charley into reluctantly going on an adventure to Candy Mountain.",
+    ArtNote: "It should be in the style of an Impressionist painting",
     LinesS3Bucket: "924586450630-data-lake",
     Title: "Candy Mountain, Charlie!",
     LinesS3Key:

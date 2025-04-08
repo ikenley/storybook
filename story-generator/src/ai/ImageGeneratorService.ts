@@ -40,6 +40,7 @@ export default class ImageGeneratorService {
     jobId: string,
     title: string,
     description: string,
+    artNote: string,
     linesS3Bucket: string,
     linesS3Key: string
   ): Promise<S3Result> {
@@ -70,6 +71,7 @@ export default class ImageGeneratorService {
       jobId,
       title,
       description,
+      artNote,
       storyConfig.cover
     );
     for (let i = 0; i < storyConfig.pages.length; i++) {
@@ -78,6 +80,7 @@ export default class ImageGeneratorService {
         jobId,
         title,
         description,
+        artNote,
         page
       );
     }
@@ -94,6 +97,7 @@ export default class ImageGeneratorService {
     jobId: string,
     title: string,
     description: string,
+    artNote: string,
     page: StoryBookPage
   ): Promise<StoryBookPage> {
     const isCover = page.pageNumber === 0;
@@ -102,6 +106,7 @@ export default class ImageGeneratorService {
     const prompt = textUtil.createPrompt(
       title,
       description,
+      artNote,
       page.line,
       isCover
     );
