@@ -19,7 +19,7 @@ resource "aws_ecs_task_definition" "storybook_task" {
   container_definitions = jsonencode([
     {
       name      = "storybook-ssg"
-      image     = "${aws_ecr_repository.storybook_task.repository_url}:9"
+      image     = "${aws_ecr_repository.storybook_task.repository_url}:10"
       cpu       = 1024
       memory    = 2048
       essential = true

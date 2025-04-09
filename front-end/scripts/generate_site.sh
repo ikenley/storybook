@@ -52,12 +52,12 @@ aws s3 cp ./homepage/dist s3://${CDN_DOMAIN}/storybook/home/ --recursive
 aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths /storybook/home/*
 
 echo "Home page deployment complete"
-SITE_URL="https://${CDN_DOMAIN}/storybook/home/"
-echo "Home page is updated at $SITE_URL"
+HOME_URL="https://${CDN_DOMAIN}/storybook/home/"
+echo "Home page is updated at $HOME_URL"
 
 # ---
 
 echo "Sending Step Function Task Success"
 TASK_TOKEN="$3"
 echo "TASK_TOKEN=$TASK_TOKEN"
-aws stepfunctions send-task-success --task-token $TASK_TOKEN --task-output "{\"SiteUrl\": \"$SITE_URL\"}"
+aws stepfunctions send-task-success --task-token $TASK_TOKEN --task-output "{\"SiteUrl\": \"$SITE_URL\",\"HomeUrl\": \"$HOME_URL\"}"
