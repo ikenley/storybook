@@ -19,7 +19,7 @@ resource "aws_ecs_task_definition" "storybook_task" {
   container_definitions = jsonencode([
     {
       name      = "storybook-ssg"
-      image     = "${aws_ecr_repository.storybook_task.repository_url}:6"
+      image     = "${aws_ecr_repository.storybook_task.repository_url}:9"
       cpu       = 1024
       memory    = 2048
       essential = true
@@ -32,6 +32,14 @@ resource "aws_ecs_task_definition" "storybook_task" {
         {
           name : "DISTRIBUTION_ID",
           value : data.aws_ssm_parameter.cdn_distribution_id.value
+        },
+        {
+          name : "HOME_CONFIG_S3_URI",
+          value : "s3://${data.aws_ssm_parameter.data_lake_s3_bucket_name.value}/${local.id}/home/home_config.json"
+        },
+        {
+          name : "STORYBOOK_URL_PREFIX",
+          value : "https://${data.aws_ssm_parameter.static_s3_bucket_name.value}/storybook"
         }
       ]
 

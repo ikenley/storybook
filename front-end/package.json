@@ -8,7 +8,8 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "dev-home": "astro dev --root ./homepage --config"
+    "dev-home": "astro dev --root ./homepage",
+    "build-home": "astro check --root ./homepage && astro build --root ./homepage"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
