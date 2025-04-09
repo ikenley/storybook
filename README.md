@@ -2,6 +2,8 @@
 
 Short books for kiddo, using AI, task orchestration, and static site generation
 
+[Demo storybooks](https://static.ikenley.com/storybook/home)
+
 ---
 
 ## Getting started
