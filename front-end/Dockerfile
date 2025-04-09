@@ -12,7 +12,10 @@ RUN curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o /tmp/awscli
     && /opt/aws/install --update -i /usr/local/aws-cli -b /usr/local/bin \
     && rm /tmp/awscliv2.zip \
     && rm -rf /opt/aws \
-    && aws --version
+    && aws --version \
+    && apt-get update \
+    && apt-get install -y jq \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
 

@@ -1,0 +1,60 @@
+---
+import Layout from "../layouts/Layout.astro";
+import homeConfig from "../home_config.json";
+
+/** Get URL-safe path based on title */
+export const getPath = (title: string) => {
+  const titleWithoutSpaces = title.replace(/\s/g, "-");
+  const validatedPath = titleWithoutSpaces.replace(/[^a-zA-Z0-9\-]/g, "");
+  const lowerCasePath = validatedPath.toLowerCase();
+  return `${lowerCasePath}/`;
+};
+
+/** Get list of titles + URL paths */
+const links = homeConfig.titles.map((t) => ({ title: t, path: getPath(t) }));
+---
+
+<Layout title="Storybook">
+  <main class="flex-shrink-0">
+    <div class="container">
+      <div>
+        <h1 class="text-center">Storybook</h1>
+        <div class="alert alert-light" role="alert">
+          Short AI-generated books for kiddo
+        </div>
+        <div class="list-group">
+          {
+            links.map((link) => (
+              <a
+                class="list-group-item list-group-item-action"
+                href={`${import.meta.env.STORYBOOK_URL_PREFIX}/${link.path}`}
+              >
+                {link.title}
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="footer mt-auto py-3">
+    <div class="container">
+      <div
+        class="d-flex flex-wrap justify-content-between align-items-center border-top"
+      >
+        <p class="col-md-4 text-body-secondary">&copy; 2025 Ian Kenley</p>
+
+        <ul class="nav col-md-4 justify-content-end">
+          <li class="nav-item">
+            <a
+              href="https://github.com/ikenley/storybook"
+              class="nav-link px-2 text-body-secondary">Github</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</Layout>
+
+<style></style>

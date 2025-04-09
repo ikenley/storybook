@@ -34,7 +34,7 @@ docker build -t ik-dev-storybook-task:test --build-arg VERSION=TEST .
 docker run -e BASE_URL -e CDN_DOMAIN -e DISTRIBUTION_ID -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN  ik-dev-storybook-task:test "s3://924586450630-data-lake/ik-dev-storybook/2024-08-11/18b48ef3-9409-470a-ad6f-d1a7c775731d-story-config.json"
 
 # Deploy
-./scripts/docker_push.sh 1
+./scripts/docker_push.sh 10
 
 # Test running the ECS task
 ./scripts/run_task.sh
