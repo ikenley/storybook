@@ -23,14 +23,14 @@ resource "aws_sns_topic_subscription" "error_notification" {
 
 # EventBridge Rule for Step Function failure events
 resource "aws_cloudwatch_event_rule" "error_notification" {
-  name        = "step-function-failure-rule"
+  name        = local.error_notification_id
   description = "Capture Step Function failures and timeouts"
 
   event_pattern = jsonencode({
     source      = ["aws.states"],
     detail-type = ["Step Functions Execution Status Change"],
     detail = {
-      status          = ["FAILED", "TIMED_OUT"],
+      status          = ["ABORTED", "FAILED", "TIMED_OUT"],
       stateMachineArn = [aws_sfn_state_machine.step_fn.arn]
     }
   })
@@ -41,6 +41,7 @@ resource "aws_cloudwatch_event_target" "error_notification" {
   rule      = aws_cloudwatch_event_rule.error_notification.name
   target_id = "${local.id}-sns"
   arn       = aws_sns_topic.error_notification.arn
+  role_arn  = aws_iam_role.error_notification.arn
 
   # Format the message for email
   input_transformer {
@@ -56,24 +57,47 @@ resource "aws_cloudwatch_event_target" "error_notification" {
     # EventBridge does not allow multi-line strings
     # This is ugly but valid
     input_template = <<EOT
-"Step Function Execution Alert:\nStatus: <status>\nState Machine: <stateMachineArn>\nExecution: <executionArn>\nStart Time: <startDate>\nEnd Time: <stopDate>\n\nRaw Event JSON:\n<rawJson>"
-EOT
+  "Step Function Execution Alert:\nStatus: <status>\nState Machine: <stateMachineArn>\nExecution: <executionArn>\nStart Time: <startDate>\nEnd Time: <stopDate>\n\nRaw Event JSON:\n<rawJson>"
+  EOT
   }
 }
 
-/*
-"Step Function Execution Alert:
-Status: <status>
-State Machine: <stateMachineArn>
-Execution: <executionArn>
-Start Time: <startDate>
-End Time: <stopDate>
+# Execution role for EventBridge Target
+resource "aws_iam_role" "error_notification" {
+  name               = local.error_notification_id
+  assume_role_policy = data.aws_iam_policy_document.error_notification_trust.json
+}
 
-Raw Event JSON:
-<rawJson>"
-*/
+data "aws_iam_policy_document" "error_notification_trust" {
+  statement {
+    actions = ["sts:AssumeRole"]
 
-# IAM policy to allow EventBridge to publish to SNS
+    principals {
+      type        = "Service"
+      identifiers = ["events.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_policy" "error_notification_policy" {
+  name   = "${local.error_notification_id}-policy"
+  policy = data.aws_iam_policy_document.error_notification_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "error_notification_policy" {
+  policy_arn = aws_iam_policy.error_notification_policy.arn
+  role       = aws_iam_role.error_notification.name
+}
+
+data "aws_iam_policy_document" "error_notification_policy" {
+  statement {
+    effect    = "Allow"
+    actions   = ["sns:Publish"]
+    resources = [aws_sns_topic.error_notification.arn]
+  }
+}
+
+# IAM resource policy to allow EventBridge to publish to SNS
 resource "aws_sns_topic_policy" "error_notification" {
   arn = aws_sns_topic.error_notification.arn
 
