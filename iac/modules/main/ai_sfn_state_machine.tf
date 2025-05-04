@@ -53,7 +53,7 @@ resource "aws_sfn_state_machine" "step_fn" {
         "Payload": {
           "ExecutionContext.$": "$$",
           "APIGatewayEndpoint": "${data.aws_ssm_parameter.manual_approval_api_gateway_invoke_url.value}",
-          "EmailSnsTopic": "${aws_sns_topic.step_fn.arn}",
+          "EmailSnsTopic": "${aws_sns_topic.info_notification.arn}",
           "Message.$": "States.Format('The text of your story is ready for review. Please see https://${local.aws_region}.console.aws.amazon.com/s3/object/${data.aws_ssm_parameter.data_lake_s3_bucket_name.value}?region=${local.aws_region}&bucketType=general&prefix={}.', $.CreateText.S3Key)"
         }
       },
@@ -189,7 +189,7 @@ resource "aws_sfn_state_machine" "step_fn" {
       "Resource": "arn:aws:states:::sns:publish",
       "Parameters": {
         "Message.$": "$",
-        "TopicArn": "${aws_sns_topic.step_fn.arn}"
+        "TopicArn": "${aws_sns_topic.info_notification.arn}"
       },
       "End": true,
       "ResultPath": "$.SnsPublish"
@@ -335,23 +335,31 @@ resource "aws_iam_policy" "step_fn" {
         "Action" : [
           "SNS:Publish"
         ],
-        "Resource" : [aws_sns_topic.step_fn.arn]
+        "Resource" : [aws_sns_topic.info_notification.arn]
       }
     ]
   })
 }
 
-resource "aws_sns_topic" "step_fn" {
-  name = local.id
+
+#-------------------------------------------------------------------------------
+# Info Notifications via SNS
+#-------------------------------------------------------------------------------
+
+locals {
+  info_notification_id = "${local.id}-info"
+}
+
+resource "aws_sns_topic" "info_notification" {
+  name = local.info_notification_id
 
   kms_master_key_id = "alias/aws/sns"
 }
 
-# TODO make this a for each
-resource "aws_sns_topic_subscription" "step_fn" {
+resource "aws_sns_topic_subscription" "info_notification" {
   for_each = var.sns_email_addresses
 
-  topic_arn = aws_sns_topic.step_fn.arn
+  topic_arn = aws_sns_topic.info_notification.arn
   protocol  = "email"
   endpoint  = each.key
 }
