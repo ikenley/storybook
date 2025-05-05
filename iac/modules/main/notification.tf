@@ -49,9 +49,6 @@ resource "aws_cloudwatch_event_target" "error_notification" {
       detail = "$.detail"
     }
 
-    # EventBridge does not allow multi-line strings
-    # This is ugly but valid
-    # "An error occurred while running ${local.id}:\n<detail>"
     input_template = <<EOT
 {
   "message": "An error occurred while running ${local.id}",
