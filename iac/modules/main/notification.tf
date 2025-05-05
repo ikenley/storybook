@@ -46,19 +46,18 @@ resource "aws_cloudwatch_event_target" "error_notification" {
   # Format the message for email
   input_transformer {
     input_paths = {
-      status          = "$.detail.status",
-      stateMachineArn = "$.detail.stateMachineArn",
-      executionArn    = "$.detail.executionArn",
-      startDate       = "$.detail.startDate",
-      stopDate        = "$.detail.stopDate",
-      rawJson         = "$"
+      detail = "$.detail"
     }
 
     # EventBridge does not allow multi-line strings
     # This is ugly but valid
+    # "An error occurred while running ${local.id}:\n<detail>"
     input_template = <<EOT
-  "Step Function Execution Alert:\nStatus: <status>\nState Machine: <stateMachineArn>\nExecution: <executionArn>\nStart Time: <startDate>\nEnd Time: <stopDate>\n\nRaw Event JSON:\n<rawJson>"
-  EOT
+{
+  "message": "An error occurred while running ${local.id}",
+  "eventDetail": <detail>
+}
+EOT
   }
 }
 
