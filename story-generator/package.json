@@ -23,7 +23,7 @@
     "url": "https://github.com/ikenley/storybook"
   },
   "dependencies": {
-    "@aws-sdk/client-bedrock-runtime": "^3.864.0",
+    "@aws-sdk/client-bedrock-runtime": "^3.896.0",
     "@aws-sdk/client-s3": "^3.893.0",
     "@aws-sdk/client-ses": "^3.864.0"
   },
