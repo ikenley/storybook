@@ -9,19 +9,21 @@ dotenv.config({ path: ".env" });
 const main = async () => {
   // const event = {
   //   Command: "GenerateText",
-  //   Title: "The fish that learned to fly",
-  //   Description: `a fish that builds an airplane and flies through a rainbow.`,
+  //   Title: "The fish that learned to boogie",
+  //   Description: `a fish that learns to dance.`,
+  //   ArtNote: `It should be in the style of surrealism`,
   // };
 
-  // const event = {
-  //   Command: "GenerateImages",
-  //   JobId: "72f5fe55-5d3f-47e1-936e-bf857b8e6aee",
-  //   Title: "The fish that learned to fly",
-  //   Description: `a fish that builds an airplane and flies through a rainbow.`,
-  //   LinesS3Bucket: process.env.DATA_LAKE_S3_BUCKET_NAME!,
-  //   LinesS3Key:
-  //     "ik-dev-storybook-generator/2024-08-06/b900721e-e769-4e39-b289-38113eca0e0c.json",
-  // };
+  const event = {
+    Command: "GenerateImages",
+    JobId: "72f5fe55-5d3f-47e1-936e-bf857b8e6aee",
+    Title: "The fish that learned to boogie",
+    Description: `a fish that learns to dance.`,
+    ArtNote: `It should be in the style of surrealism`,
+    LinesS3Bucket: process.env.DATA_LAKE_S3_BUCKET_NAME!,
+    LinesS3Key:
+      "ik-dev-storybook/2026-01-19/e4518f0b-aa16-40be-b7a1-395d3f305549-text.json",
+  };
 
   // const event = {
   //   Command: "SendConfirmationEmail",
@@ -30,26 +32,22 @@ const main = async () => {
   //   SiteUrl: "https://static.ikenley.com/storybook/the-bird-in-the-circle/",
   // };
 
-  const event = {
-    Command: "GenerateImages",
-    Description:
-      "A clique of unicorns harass their comrade Charley into reluctantly going on an adventure to Candy Mountain.",
-    ArtNote: "It should be in the style of an Impressionist painting",
-    LinesS3Bucket: "924586450630-data-lake",
-    Title: "Candy Mountain, Charlie!",
-    LinesS3Key:
-      "ik-dev-storybook/2024-08-16/eab82d50-772d-45e8-b656-4e7486ca0e42-text.json",
-    JobId: "68d64b63-cba7-4b3f-983c-2245e575bed1",
-  };
+  // const event = {
+  //   Command: "GenerateImages",
+  //   Description:
+  //     "A clique of unicorns harass their comrade Charley into reluctantly going on an adventure to Candy Mountain.",
+  //   ArtNote: "It should be in the style of an Impressionist painting",
+  //   LinesS3Bucket: "924586450630-data-lake",
+  //   Title: "Candy Mountain, Charlie!",
+  //   LinesS3Key:
+  //     "ik-dev-storybook/2024-08-16/eab82d50-772d-45e8-b656-4e7486ca0e42-text.json",
+  //   JobId: "68d64b63-cba7-4b3f-983c-2245e575bed1",
+  // };
 
   const context: any = {};
 
-  const callback = (error: any, result: any) => {
-    console.error(`error= ${error}`);
-    console.log(`result= ${JSON.stringify(result)}`);
-  };
-
-  await handler(event, context, callback);
+  const result = await handler(event, context);
+  console.log(`result= ${JSON.stringify(result)}`);
 };
 
 main();

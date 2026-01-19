@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { S3Client } from "@aws-sdk/client-s3";
-import { Handler } from "aws-lambda";
+import { Context } from "aws-lambda";
 import { ConfigOptions, getConfigOptions } from "./config/ConfigOptions";
 import TextGenerator, { TextGeneratorResponse } from "./ai/TextGenerator";
 import FileService from "./s3/FileService";
@@ -9,7 +9,7 @@ import ImageGeneratorService from "./ai/ImageGeneratorService";
 import EmailService from "./email/EmailService";
 import { SESClient } from "@aws-sdk/client-ses";
 
-export const handler: Handler = async (event, _context, callback) => {
+export const handler = async (event: any, _context: Context) => {
   console.log(`event= ${JSON.stringify(event)}`);
 
   const config = getConfigOptions();
@@ -49,7 +49,7 @@ export const handler: Handler = async (event, _context, callback) => {
 
   console.log(`result= ${JSON.stringify(result)}`);
 
-  callback(null, result);
+  return result;
 };
 
 const generateText = async (
