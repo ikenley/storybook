@@ -17,5 +17,5 @@ Asyncronus task runner for creating storybooks. An AWS Step Function will call a
 Ordinarily you'd use an automated, cloud-based CI/CD system (e.g. CodePipeline). But if you're in a hurry or trying to save a buck...
 
 ```
-./scripts/docker_push_lambda.sh 202504076
+./scripts/docker_push_lambda.sh 20260119
 ```
