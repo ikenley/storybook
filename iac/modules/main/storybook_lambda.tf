@@ -140,7 +140,7 @@ resource "aws_iam_policy" "storybook_lambda" {
         Sid : "AllowSendEmail",
         Effect   = "Allow"
         Action   = ["ses:SendEmail"]
-        Resource = "*"
+        Resource = "arn:aws:ses:us-east-1:924586450630:identity/ikenley.com"
       }
     ]
   })
