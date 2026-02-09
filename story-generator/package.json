@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-bedrock-runtime": "^3.981.0",
-    "@aws-sdk/client-s3": "^3.975.0",
+    "@aws-sdk/client-s3": "^3.985.0",
     "@aws-sdk/client-ses": "^3.980.0"
   },
   "devDependencies": {
