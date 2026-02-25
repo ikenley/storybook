@@ -15,13 +15,36 @@ resource "aws_ecr_repository" "ai_image_task" { # TODO change to storybook_lambd
   }
 }
 
+resource "aws_ecr_lifecycle_policy" "ai_image_task" {
+  repository = aws_ecr_repository.ai_image_task.name
+
+  policy = <<EOF
+{
+  "rules": [
+    {
+      "rulePriority": 1,
+      "description": "Keep last 3 images",
+      "selection": {
+        "tagStatus": "any",
+        "countType": "imageCountMoreThan",
+        "countNumber": 3
+      },
+      "action": {
+        "type": "expire"
+      }
+    }
+  ]
+}
+EOF
+}
+
 resource "aws_lambda_function" "storybook_lambda" {
   function_name = local.storybook_lambda_id
   description   = "${local.storybook_lambda_id} AI storybook generation"
   role          = aws_iam_role.storybook_lambda.arn
 
   # Placeholder image uri
-  image_uri    = "924586450630.dkr.ecr.us-east-1.amazonaws.com/ik-dev-storybook-lambda:20260119"
+  image_uri    = "924586450630.dkr.ecr.us-east-1.amazonaws.com/ik-dev-storybook-lambda:20260224a"
   package_type = "Image"
 
   # image_config {
