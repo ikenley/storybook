@@ -1,10 +1,7 @@
 import { writeFile } from "fs/promises";
 import * as path from "path";
 import { randomUUID } from "crypto";
-import {
-  BedrockRuntimeClient,
-  InvokeModelCommand,
-} from "@aws-sdk/client-bedrock-runtime";
+import { GoogleGenAI } from "@google/genai";
 import { ConfigOptions } from "../config/ConfigOptions";
 import FileService, { S3Result } from "../s3/FileService";
 import * as textUtil from "./textUtil";
@@ -22,16 +19,16 @@ export type StorybookConfig = {
 
 export default class ImageGeneratorService {
   private config: ConfigOptions;
-  private bedrockRuntimeClient: BedrockRuntimeClient;
+  private genAI: GoogleGenAI;
   private fileService: FileService;
 
   constructor(
     config: ConfigOptions,
-    bedrockRuntimeClient: BedrockRuntimeClient,
+    genAI: GoogleGenAI,
     fileService: FileService
   ) {
     this.config = config;
-    this.bedrockRuntimeClient = bedrockRuntimeClient;
+    this.genAI = genAI;
     this.fileService = fileService;
   }
 
@@ -134,44 +131,23 @@ export default class ImageGeneratorService {
    */
   async createImage(prompt: string): Promise<string> {
     const imageId = randomUUID();
-    const input = {
-      // InvokeModelRequest
-      body: JSON.stringify({
-        taskType: "TEXT_IMAGE",
-        textToImageParams: { text: prompt },
-        imageGenerationConfig: {
-          numberOfImages: 1,
-          quality: "premium",
-          cfgScale: 8.0,
-          height: 1024,
-          width: 1024,
-        },
-      }),
-      contentType: "application/json",
-      accept: "*/*",
-      modelId: "amazon.nova-canvas-v1:0",
-    };
-    const command = new InvokeModelCommand(input);
     console.log("createImage", JSON.stringify({ imageId, prompt }));
-    const response = await this.bedrockRuntimeClient.send(command);
-    // Wait 1 second to avoid service level limit
-    console.log("Waiting 5 seconds to avoid service account quota...");
-    await this.wait(1000);
 
-    const blobAdapter = response.body;
-    const textDecoder = new TextDecoder("utf-8");
-    const jsonString = textDecoder.decode(blobAdapter.buffer);
+    const response = await this.genAI.models.generateContent({
+      model: "gemini-2.5-flash-image",
+      contents: prompt,
+    });
 
-    try {
-      const parsedData = JSON.parse(jsonString);
-      const base64Data = parsedData.images[0];
-      const filePath = path.join("/tmp", `${imageId}.png`);
-      await writeFile(filePath, base64Data, { encoding: "base64" });
-      return filePath;
-    } catch (error: any) {
-      console.error("Error parsing JSON:", JSON.stringify(error));
-      throw new Error(error);
+    const imagePart = response.candidates?.[0]?.content?.parts?.find(
+      (p: any) => p.inlineData
+    );
+    if (!imagePart?.inlineData?.data) {
+      throw new Error("No image data in Gemini response");
     }
+
+    const filePath = path.join("/tmp", `${imageId}.png`);
+    await writeFile(filePath, imagePart.inlineData.data, { encoding: "base64" });
+    return filePath;
   }
 
   /** Upload StoryBookConfig JSON file to S3 data lake */
@@ -188,9 +164,5 @@ export default class ImageGeneratorService {
     );
 
     return storyConfigS3;
-  }
-
-  private wait(milliseconds: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, milliseconds));
   }
 }

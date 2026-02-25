@@ -5,6 +5,7 @@ import { ConfigOptions, getConfigOptions } from "./config/ConfigOptions";
 import TextGenerator, { TextGeneratorResponse } from "./ai/TextGenerator";
 import FileService from "./s3/FileService";
 import { BedrockRuntimeClient } from "@aws-sdk/client-bedrock-runtime";
+import { GoogleGenAI } from "@google/genai";
 import ImageGeneratorService from "./ai/ImageGeneratorService";
 import EmailService from "./email/EmailService";
 import { SESClient } from "@aws-sdk/client-ses";
@@ -81,9 +82,7 @@ const generateImages = async (
   linesS3Bucket: string,
   linesS3Key: string
 ) => {
-  const bedrockRuntimeClient = new BedrockRuntimeClient({
-    region: config.aws.region,
-  });
+  const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
   const s3Client = new S3Client({
     region: config.aws.region,
   });
@@ -91,7 +90,7 @@ const generateImages = async (
   const fileService = new FileService(config, s3Client);
   const imageGenerator = new ImageGeneratorService(
     config,
-    bedrockRuntimeClient,
+    genAI,
     fileService
   );
 
