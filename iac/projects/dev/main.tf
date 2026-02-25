@@ -33,4 +33,5 @@ module "main" {
   ses_email_address   = var.ses_email_address
   sns_email_addresses = toset([var.sns_email_address])
 
+  gemini_api_key = var.gemini_api_key
 }
