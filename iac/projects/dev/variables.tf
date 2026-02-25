@@ -5,3 +5,6 @@ variable "ses_email_address" {
 variable "sns_email_address" {
   type = string
 }
+variable "gemini_api_key" {
+  type = string
+}

@@ -32,3 +32,6 @@ variable "sns_email_addresses" {
   type = set(string)
 }
 
+variable "gemini_api_key" {
+  type = string
+}
