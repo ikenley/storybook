@@ -72,7 +72,7 @@ It has the title "${title}". It is about ${desription}.`,
       body: JSON.stringify(payload),
       contentType: "application/json",
       accept: "*/*",
-      modelId: "global.anthropic.claude-sonnet-4-5-20250929-v1:0",
+      modelId: "global.anthropic.claude-sonnet-4-6",
     };
     const command = new InvokeModelCommand(input);
     const response = await this.bedrockRuntimeClient.send(command);
