@@ -7,23 +7,23 @@ dotenv.config({ path: ".env" });
 
 /** Simulate local lambda handler event for local testing */
 const main = async () => {
-  // const event = {
-  //   Command: "GenerateText",
-  //   Title: "The fish that learned to boogie",
-  //   Description: `a fish that learns to dance.`,
-  //   ArtNote: `It should be in the style of surrealism`,
-  // };
-
   const event = {
-    Command: "GenerateImages",
-    JobId: "72f5fe55-5d3f-47e1-936e-bf857b8e6aee",
+    Command: "GenerateText",
     Title: "The fish that learned to boogie",
     Description: `a fish that learns to dance.`,
     ArtNote: `It should be in the style of surrealism`,
-    LinesS3Bucket: process.env.DATA_LAKE_S3_BUCKET_NAME!,
-    LinesS3Key:
-      "ik-dev-storybook/2026-01-19/e4518f0b-aa16-40be-b7a1-395d3f305549-text.json",
   };
+
+  // const event = {
+  //   Command: "GenerateImages",
+  //   JobId: "72f5fe55-5d3f-47e1-936e-bf857b8e6aee",
+  //   Title: "The fish that learned to boogie",
+  //   Description: `a fish that learns to dance.`,
+  //   ArtNote: `It should be in the style of surrealism`,
+  //   LinesS3Bucket: process.env.DATA_LAKE_S3_BUCKET_NAME!,
+  //   LinesS3Key:
+  //     "ik-dev-storybook/2026-01-19/e4518f0b-aa16-40be-b7a1-395d3f305549-text.json",
+  // };
 
   // const event = {
   //   Command: "SendConfirmationEmail",
