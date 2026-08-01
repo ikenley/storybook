@@ -4,12 +4,17 @@ import { S3Client } from "@aws-sdk/client-s3";
 import { SESClient } from "@aws-sdk/client-ses";
 import { GoogleGenAI } from "@google/genai";
 import type { Context } from "aws-lambda";
-import ImageGeneratorService from "./ai/ImageGeneratorService";
-import TextGenerator, { type TextGeneratorResponse } from "./ai/TextGenerator";
-import { type ConfigOptions, getConfigOptions } from "./config/ConfigOptions";
-import { requireEnv } from "./config/env";
-import EmailService from "./email/EmailService";
-import FileService from "./s3/FileService";
+import ImageGeneratorService from "./ai/ImageGeneratorService.ts";
+import TextGenerator, {
+  type TextGeneratorResponse,
+} from "./ai/TextGenerator.ts";
+import {
+  type ConfigOptions,
+  getConfigOptions,
+} from "./config/ConfigOptions.ts";
+import { requireEnv } from "./config/env.ts";
+import EmailService from "./email/EmailService.ts";
+import FileService from "./s3/FileService.ts";
 
 export const handler = async (event: any, _context: Context) => {
   console.log(`event= ${JSON.stringify(event)}`);

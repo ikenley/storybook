@@ -7,9 +7,9 @@ import {
   PutObjectCommand,
   type S3Client,
 } from "@aws-sdk/client-s3";
-import type { NodeJsRuntimeStreamingBlobPayloadOutputTypes } from "@smithy/types/dist-types/streaming-payload/streaming-blob-payload-output-types";
-import type { ConfigOptions } from "../config/ConfigOptions";
-import { getS3DatePrefix } from "./s3Util";
+import type { NodeJsRuntimeStreamingBlobPayloadOutputTypes } from "@smithy/types";
+import type { ConfigOptions } from "../config/ConfigOptions.ts";
+import { getS3DatePrefix } from "./s3Util.ts";
 
 export type S3Result = { s3Bucket: string; s3Key: string; s3Uri: string };
 

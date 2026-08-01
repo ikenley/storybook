@@ -2,10 +2,10 @@ import { randomUUID } from "node:crypto";
 import { writeFile } from "node:fs/promises";
 import * as path from "node:path";
 import type { GoogleGenAI } from "@google/genai";
-import type { ConfigOptions } from "../config/ConfigOptions";
-import type FileService from "../s3/FileService";
-import type { S3Result } from "../s3/FileService";
-import * as textUtil from "./textUtil";
+import type { ConfigOptions } from "../config/ConfigOptions.ts";
+import type FileService from "../s3/FileService.ts";
+import type { S3Result } from "../s3/FileService.ts";
+import * as textUtil from "./textUtil.ts";
 
 export type StoryBookPage = {
   pageNumber: number;
