@@ -1,15 +1,15 @@
-import dotenv from "dotenv";
-import { randomUUID } from "crypto";
+import { randomUUID } from "node:crypto";
 import { parseArgs } from "node:util";
 import { BedrockRuntimeClient } from "@aws-sdk/client-bedrock-runtime";
 import { S3Client } from "@aws-sdk/client-s3";
 import {
-	SendTaskSuccessCommand,
 	SendTaskFailureCommand,
+	SendTaskSuccessCommand,
 	SFNClient,
 } from "@aws-sdk/client-sfn";
-import { getConfigOptions } from "./config/ConfigOptions.js";
+import dotenv from "dotenv";
 import ImageGeneratorService from "./ai/ImageGeneratorService.mjs";
+import { getConfigOptions } from "./config/ConfigOptions.js";
 
 // Set the NODE_ENV to 'development' by default
 process.env.NODE_ENV = process.env.NODE_ENV || "development";

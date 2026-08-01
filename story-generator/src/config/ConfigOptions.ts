@@ -1,3 +1,5 @@
+import { requireEnv } from "./env";
+
 export type S3Config = {
 	bucketName: string;
 	keyPrefix: string;
@@ -22,18 +24,18 @@ export type ConfigOptions = {
 export const getConfigOptions = (): ConfigOptions => {
 	const config = {
 		aws: {
-			region: process.env.AWS_REGION!,
+			region: requireEnv("AWS_REGION"),
 		},
-		cdnDomain: process.env.CDN_DOMAIN!,
-		fromEmailAddress: process.env.FROM_EMAIL_ADDRESS!,
+		cdnDomain: requireEnv("CDN_DOMAIN"),
+		fromEmailAddress: requireEnv("FROM_EMAIL_ADDRESS"),
 		s3: {
 			dataLake: {
-				bucketName: process.env.DATA_LAKE_S3_BUCKET_NAME!,
-				keyPrefix: process.env.DATA_LAKE_S3_BUCKET_KEY_PREFIX!,
+				bucketName: requireEnv("DATA_LAKE_S3_BUCKET_NAME"),
+				keyPrefix: requireEnv("DATA_LAKE_S3_BUCKET_KEY_PREFIX"),
 			},
 			static: {
-				bucketName: process.env.STATIC_S3_BUCKET_NAME!,
-				keyPrefix: process.env.STATIC_S3_BUCKET_KEY_PREFIX!,
+				bucketName: requireEnv("STATIC_S3_BUCKET_NAME"),
+				keyPrefix: requireEnv("STATIC_S3_BUCKET_KEY_PREFIX"),
 			},
 		},
 	};

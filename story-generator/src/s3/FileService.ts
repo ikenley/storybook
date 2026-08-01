@@ -1,15 +1,15 @@
-import { readFileSync } from "fs";
-import { writeFile } from "fs/promises";
-import * as path from "path";
-import { randomUUID } from "crypto";
+import { randomUUID } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { writeFile } from "node:fs/promises";
+import * as path from "node:path";
 import {
 	GetObjectCommand,
 	PutObjectCommand,
 	type S3Client,
 } from "@aws-sdk/client-s3";
+import type { NodeJsRuntimeStreamingBlobPayloadOutputTypes } from "@smithy/types/dist-types/streaming-payload/streaming-blob-payload-output-types";
 import type { ConfigOptions } from "../config/ConfigOptions";
 import { getS3DatePrefix } from "./s3Util";
-import type { NodeJsRuntimeStreamingBlobPayloadOutputTypes } from "@smithy/types/dist-types/streaming-payload/streaming-blob-payload-output-types";
 
 export type S3Result = { s3Bucket: string; s3Key: string; s3Uri: string };
 

@@ -1,14 +1,15 @@
-import { randomUUID } from "crypto";
-import { S3Client } from "@aws-sdk/client-s3";
-import type { Context } from "aws-lambda";
-import { type ConfigOptions, getConfigOptions } from "./config/ConfigOptions";
-import TextGenerator, { type TextGeneratorResponse } from "./ai/TextGenerator";
-import FileService from "./s3/FileService";
+import { randomUUID } from "node:crypto";
 import { BedrockRuntimeClient } from "@aws-sdk/client-bedrock-runtime";
-import { GoogleGenAI } from "@google/genai";
-import ImageGeneratorService from "./ai/ImageGeneratorService";
-import EmailService from "./email/EmailService";
+import { S3Client } from "@aws-sdk/client-s3";
 import { SESClient } from "@aws-sdk/client-ses";
+import { GoogleGenAI } from "@google/genai";
+import type { Context } from "aws-lambda";
+import ImageGeneratorService from "./ai/ImageGeneratorService";
+import TextGenerator, { type TextGeneratorResponse } from "./ai/TextGenerator";
+import { type ConfigOptions, getConfigOptions } from "./config/ConfigOptions";
+import { requireEnv } from "./config/env";
+import EmailService from "./email/EmailService";
+import FileService from "./s3/FileService";
 
 export const handler = async (event: any, _context: Context) => {
 	console.log(`event= ${JSON.stringify(event)}`);
@@ -82,7 +83,7 @@ const generateImages = async (
 	linesS3Bucket: string,
 	linesS3Key: string,
 ) => {
-	const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+	const genAI = new GoogleGenAI({ apiKey: requireEnv("GEMINI_API_KEY") });
 	const s3Client = new S3Client({
 		region: config.aws.region,
 	});

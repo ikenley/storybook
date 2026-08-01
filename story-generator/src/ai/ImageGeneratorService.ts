@@ -1,6 +1,6 @@
-import { writeFile } from "fs/promises";
-import * as path from "path";
-import { randomUUID } from "crypto";
+import { randomUUID } from "node:crypto";
+import { writeFile } from "node:fs/promises";
+import * as path from "node:path";
 import type { GoogleGenAI } from "@google/genai";
 import type { ConfigOptions } from "../config/ConfigOptions";
 import type FileService from "../s3/FileService";
