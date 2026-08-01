@@ -14,9 +14,9 @@ updates:
       interval: "weekly"
     ignore:
       # TypeScript majors must be upgraded in lockstep with the toolchain.
-      # TS 7 is outside the peer ranges of @typescript-eslint 8.x (<6.1.0)
-      # and ts-jest 29.x (<7), which makes `npm i` unresolvable.
-      # Remove once @typescript-eslint v9 and ts-jest v30 support TS 7.
+      # TS 7 is outside the peer range of ts-jest 29.x (<7), which makes
+      # `npm i` unresolvable. Remove once ts-jest v30 supports TS 7, or once
+      # the test runner migration drops ts-jest entirely.
       - dependency-name: "typescript"
         update-types: ["version-update:semver-major"]
 

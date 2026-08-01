@@ -9,7 +9,7 @@ export function getStaticPaths() {
 }
 
 const { pageNumber } = Astro.params;
-const pageNumberInt = parseInt(pageNumber);
+const pageNumberInt = Number.parseInt(pageNumber, 10);
 
 const page = storyConfig.pages.find((p) => pageNumberInt === p.pageNumber);
 

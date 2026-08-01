@@ -1,9 +1,9 @@
-import { randomUUID } from "crypto";
+import { randomUUID } from "node:crypto";
 import {
-  BedrockRuntimeClient,
+  type BedrockRuntimeClient,
   InvokeModelCommand,
 } from "@aws-sdk/client-bedrock-runtime";
-import FileService from "../s3/FileService";
+import type FileService from "../s3/FileService";
 import * as textUtil from "./textUtil";
 
 export type TextGeneratorResponse = {

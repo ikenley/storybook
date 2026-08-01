@@ -20,7 +20,7 @@ cd story-generator
 npm install
 npm run build          # Compile TypeScript
 npm test               # Run Jest tests
-npm run lint           # ESLint
+npm run lint           # Biome lint (use `npm run check` for lint + format)
 npm run test-lambda    # Local Lambda testing with ts-node
 ./scripts/docker_push_lambda.sh <version>  # Deploy Lambda Docker image
 ```

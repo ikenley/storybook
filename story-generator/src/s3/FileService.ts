@@ -1,15 +1,15 @@
-import { readFileSync } from "fs";
-import { writeFile } from "fs/promises";
-import * as path from "path";
-import { randomUUID } from "crypto";
+import { randomUUID } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { writeFile } from "node:fs/promises";
+import * as path from "node:path";
 import {
   GetObjectCommand,
   PutObjectCommand,
-  S3Client,
+  type S3Client,
 } from "@aws-sdk/client-s3";
-import { ConfigOptions } from "../config/ConfigOptions";
+import type { NodeJsRuntimeStreamingBlobPayloadOutputTypes } from "@smithy/types/dist-types/streaming-payload/streaming-blob-payload-output-types";
+import type { ConfigOptions } from "../config/ConfigOptions";
 import { getS3DatePrefix } from "./s3Util";
-import { NodeJsRuntimeStreamingBlobPayloadOutputTypes } from "@smithy/types/dist-types/streaming-payload/streaming-blob-payload-output-types";
 
 export type S3Result = { s3Bucket: string; s3Key: string; s3Uri: string };
 
@@ -29,7 +29,7 @@ export default class FileService {
    */
   public async writeToJsonFile(
     data: any,
-    fileId: string | null = null
+    fileId: string | null = null,
   ): Promise<string> {
     try {
       const id = fileId ?? randomUUID();
@@ -51,7 +51,7 @@ export default class FileService {
     filePath: string,
     fileKeySuffix: string,
     s3Bucket: string = this.config.s3.dataLake.bucketName,
-    s3KeyPrefix: string = this.config.s3.dataLake.keyPrefix
+    s3KeyPrefix: string = this.config.s3.dataLake.keyPrefix,
   ): Promise<S3Result> {
     const fileContent = readFileSync(filePath); // This is inefficient, but works for small files
     const datePrefix = getS3DatePrefix();
@@ -63,7 +63,7 @@ export default class FileService {
     };
     console.log(
       "uploadToS3",
-      JSON.stringify({ bucket: input.Bucket, s3Key: input.Key })
+      JSON.stringify({ bucket: input.Bucket, s3Key: input.Key }),
     );
     const command = new PutObjectCommand(input);
     await this.s3Client.send(command);
@@ -91,7 +91,7 @@ export default class FileService {
   }
 
   private streamToString(
-    stream: NodeJsRuntimeStreamingBlobPayloadOutputTypes
+    stream: NodeJsRuntimeStreamingBlobPayloadOutputTypes,
   ): Promise<string> {
     return new Promise((resolve, reject) => {
       const chunks: any = [];

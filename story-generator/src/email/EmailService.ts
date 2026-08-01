@@ -1,5 +1,5 @@
-import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
-import { ConfigOptions } from "../config/ConfigOptions";
+import { type SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+import type { ConfigOptions } from "../config/ConfigOptions";
 
 /** Handles sending confirmation emails via AWS SES */
 export default class FileService {
@@ -18,11 +18,11 @@ export default class FileService {
   public async sendConfirmationEmail(
     title: string,
     toEmail: string,
-    siteUrl: string
+    siteUrl: string,
   ): Promise<void> {
     console.log(
       "Sending confirmation email",
-      JSON.stringify({ title, siteUrl })
+      JSON.stringify({ title, siteUrl }),
     );
 
     const subject = this.getSubject(title);

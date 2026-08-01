@@ -1,9 +1,10 @@
-import { writeFile } from "fs/promises";
-import * as path from "path";
-import { randomUUID } from "crypto";
-import { GoogleGenAI } from "@google/genai";
-import { ConfigOptions } from "../config/ConfigOptions";
-import FileService, { S3Result } from "../s3/FileService";
+import { randomUUID } from "node:crypto";
+import { writeFile } from "node:fs/promises";
+import * as path from "node:path";
+import type { GoogleGenAI } from "@google/genai";
+import type { ConfigOptions } from "../config/ConfigOptions";
+import type FileService from "../s3/FileService";
+import type { S3Result } from "../s3/FileService";
 import * as textUtil from "./textUtil";
 
 export type StoryBookPage = {
@@ -25,7 +26,7 @@ export default class ImageGeneratorService {
   constructor(
     config: ConfigOptions,
     genAI: GoogleGenAI,
-    fileService: FileService
+    fileService: FileService,
   ) {
     this.config = config;
     this.genAI = genAI;
@@ -39,17 +40,17 @@ export default class ImageGeneratorService {
     description: string,
     artNote: string,
     linesS3Bucket: string,
-    linesS3Key: string
+    linesS3Key: string,
   ): Promise<S3Result> {
     console.log(
       "generateImages",
-      JSON.stringify({ jobId, title, description, linesS3Bucket, linesS3Key })
+      JSON.stringify({ jobId, title, description, linesS3Bucket, linesS3Key }),
     );
 
     // Get lines from S3
     const lines = await this.fileService.readJsonFromS3<string[]>(
       linesS3Bucket,
-      linesS3Key
+      linesS3Key,
     );
     console.log("lines", JSON.stringify(lines));
 
@@ -70,7 +71,7 @@ export default class ImageGeneratorService {
       description,
       artNote,
       lines,
-      storyConfig.cover
+      storyConfig.cover,
     );
     for (let i = 0; i < storyConfig.pages.length; i++) {
       const page = storyConfig.pages[i];
@@ -80,7 +81,7 @@ export default class ImageGeneratorService {
         description,
         artNote,
         lines,
-        page
+        page,
       );
     }
 
@@ -98,7 +99,7 @@ export default class ImageGeneratorService {
     description: string,
     artNote: string,
     lines: string[],
-    page: StoryBookPage
+    page: StoryBookPage,
   ): Promise<StoryBookPage> {
     const isCover = page.pageNumber === 0;
 
@@ -109,7 +110,7 @@ export default class ImageGeneratorService {
       artNote,
       lines,
       page.line,
-      isCover
+      isCover,
     );
 
     const imgPath = await this.createImage(prompt);
@@ -122,7 +123,7 @@ export default class ImageGeneratorService {
       imgPath,
       fileKeySuffix,
       bucketName,
-      keyPrefix
+      keyPrefix,
     );
 
     // Return Page configuration
@@ -143,28 +144,29 @@ export default class ImageGeneratorService {
     });
 
     const imagePart = response.candidates?.[0]?.content?.parts?.find(
-      (p: any) => p.inlineData
+      (p: any) => p.inlineData,
     );
     if (!imagePart?.inlineData?.data) {
       throw new Error("No image data in Gemini response");
     }
 
     const filePath = path.join("/tmp", `${imageId}.png`);
-    await writeFile(filePath, imagePart.inlineData.data, { encoding: "base64" });
+    await writeFile(filePath, imagePart.inlineData.data, {
+      encoding: "base64",
+    });
     return filePath;
   }
 
   /** Upload StoryBookConfig JSON file to S3 data lake */
   private async uploadStorybookConfig(
-    storyconfig: StorybookConfig
+    storyconfig: StorybookConfig,
   ): Promise<S3Result> {
-    const storyConfigFilePath = await this.fileService.writeToJsonFile(
-      storyconfig
-    );
+    const storyConfigFilePath =
+      await this.fileService.writeToJsonFile(storyconfig);
     const fileName = `${randomUUID()}-story-config.json`;
     const storyConfigS3 = await this.fileService.uploadToS3(
       storyConfigFilePath,
-      fileName
+      fileName,
     );
 
     return storyConfigS3;

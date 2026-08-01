@@ -1,14 +1,15 @@
-import { randomUUID } from "crypto";
-import { S3Client } from "@aws-sdk/client-s3";
-import { Context } from "aws-lambda";
-import { ConfigOptions, getConfigOptions } from "./config/ConfigOptions";
-import TextGenerator, { TextGeneratorResponse } from "./ai/TextGenerator";
-import FileService from "./s3/FileService";
+import { randomUUID } from "node:crypto";
 import { BedrockRuntimeClient } from "@aws-sdk/client-bedrock-runtime";
-import { GoogleGenAI } from "@google/genai";
-import ImageGeneratorService from "./ai/ImageGeneratorService";
-import EmailService from "./email/EmailService";
+import { S3Client } from "@aws-sdk/client-s3";
 import { SESClient } from "@aws-sdk/client-ses";
+import { GoogleGenAI } from "@google/genai";
+import type { Context } from "aws-lambda";
+import ImageGeneratorService from "./ai/ImageGeneratorService";
+import TextGenerator, { type TextGeneratorResponse } from "./ai/TextGenerator";
+import { type ConfigOptions, getConfigOptions } from "./config/ConfigOptions";
+import { requireEnv } from "./config/env";
+import EmailService from "./email/EmailService";
+import FileService from "./s3/FileService";
 
 export const handler = async (event: any, _context: Context) => {
   console.log(`event= ${JSON.stringify(event)}`);
@@ -34,7 +35,7 @@ export const handler = async (event: any, _context: Context) => {
       description,
       artNote,
       linesS3Bucket,
-      linesS3Key
+      linesS3Key,
     );
   } else if (event.Command === "SendConfirmationEmail") {
     const title = event.Title;
@@ -44,7 +45,7 @@ export const handler = async (event: any, _context: Context) => {
       config,
       title,
       toEmailAddress,
-      siteUrl
+      siteUrl,
     );
   }
 
@@ -56,7 +57,7 @@ export const handler = async (event: any, _context: Context) => {
 const generateText = async (
   config: ConfigOptions,
   title: string,
-  description: string
+  description: string,
 ): Promise<TextGeneratorResponse> => {
   const bedrockRuntimeClient = new BedrockRuntimeClient({
     region: config.aws.region,
@@ -80,19 +81,15 @@ const generateImages = async (
   description: string,
   artNote: string,
   linesS3Bucket: string,
-  linesS3Key: string
+  linesS3Key: string,
 ) => {
-  const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+  const genAI = new GoogleGenAI({ apiKey: requireEnv("GEMINI_API_KEY") });
   const s3Client = new S3Client({
     region: config.aws.region,
   });
 
   const fileService = new FileService(config, s3Client);
-  const imageGenerator = new ImageGeneratorService(
-    config,
-    genAI,
-    fileService
-  );
+  const imageGenerator = new ImageGeneratorService(config, genAI, fileService);
 
   const result = await imageGenerator.generate(
     jobId,
@@ -100,7 +97,7 @@ const generateImages = async (
     description,
     artNote,
     linesS3Bucket,
-    linesS3Key
+    linesS3Key,
   );
 
   return result;
@@ -111,7 +108,7 @@ const sendConfirmationEmail = async (
   config: ConfigOptions,
   title: string,
   toEmailAddress: string,
-  siteUrl: string
+  siteUrl: string,
 ) => {
   const sesClient = new SESClient();
   const emailService = new EmailService(config, sesClient);

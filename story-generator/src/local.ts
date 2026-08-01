@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import { requireEnv } from "./config/env";
 import handler from "./lambda_function";
 
 // Set the NODE_ENV to 'development' by default
@@ -20,7 +21,7 @@ const main = async () => {
     Title: "The fish that learned to boogie",
     Description: `a fish that learns to dance.`,
     ArtNote: `It should be in the style of surrealism`,
-    LinesS3Bucket: process.env.DATA_LAKE_S3_BUCKET_NAME!,
+    LinesS3Bucket: requireEnv("DATA_LAKE_S3_BUCKET_NAME"),
     LinesS3Key:
       "ik-dev-storybook/2026-01-19/e4518f0b-aa16-40be-b7a1-395d3f305549-text.json",
   };

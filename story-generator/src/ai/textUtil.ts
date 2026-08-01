@@ -15,7 +15,7 @@ export const createPrompt = (
 /** Create URL-safe filename based on the line */
 export const getFileName = (line: string) => {
   const lineWithoutSpaces = line.replace(/\s/g, "-");
-  const sanitizedLine = lineWithoutSpaces.replace(/[^a-zA-Z0-9\-]/g, "");
+  const sanitizedLine = lineWithoutSpaces.replace(/[^a-zA-Z0-9-]/g, "");
   return `${sanitizedLine}.png`;
 };
 
@@ -24,7 +24,7 @@ export const getFileName = (line: string) => {
  */
 export const getBaseUrl = (title: string) => {
   const lineWithoutSpaces = title.replace(/\s/g, "-");
-  const sanitizedLine = lineWithoutSpaces.replace(/[^a-zA-Z0-9\-]/g, "");
+  const sanitizedLine = lineWithoutSpaces.replace(/[^a-zA-Z0-9-]/g, "");
   const lowerCaseLine = sanitizedLine.toLowerCase();
   return `/storybook/${lowerCaseLine}`;
 };
