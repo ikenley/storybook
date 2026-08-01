@@ -69,6 +69,7 @@ export default class ImageGeneratorService {
       title,
       description,
       artNote,
+      lines,
       storyConfig.cover
     );
     for (let i = 0; i < storyConfig.pages.length; i++) {
@@ -78,6 +79,7 @@ export default class ImageGeneratorService {
         title,
         description,
         artNote,
+        lines,
         page
       );
     }
@@ -95,6 +97,7 @@ export default class ImageGeneratorService {
     title: string,
     description: string,
     artNote: string,
+    lines: string[],
     page: StoryBookPage
   ): Promise<StoryBookPage> {
     const isCover = page.pageNumber === 0;
@@ -104,6 +107,7 @@ export default class ImageGeneratorService {
       title,
       description,
       artNote,
+      lines,
       page.line,
       isCover
     );
