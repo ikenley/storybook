@@ -3,9 +3,13 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
+    "prebuild": "npm run lint:write && npm run format",
     "build": "astro check && astro build",
+    "dev": "astro dev",
+    "format": "biome format --write",
+    "lint": "biome lint",
+    "lint:write": "biome lint --write",
+    "start": "astro dev",
     "preview": "astro preview",
     "astro": "astro",
     "dev-home": "astro dev --root ./homepage",
@@ -15,5 +19,8 @@
     "@astrojs/check": "^0.9.9",
     "astro": "^7.1.1",
     "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.6"
   }
 }

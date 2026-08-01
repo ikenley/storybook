@@ -5,7 +5,7 @@ import homeConfig from "../home_config.json";
 /** Get URL-safe path based on title */
 export const getPath = (title: string) => {
   const titleWithoutSpaces = title.replace(/\s/g, "-");
-  const validatedPath = titleWithoutSpaces.replace(/[^a-zA-Z0-9\-]/g, "");
+  const validatedPath = titleWithoutSpaces.replace(/[^a-zA-Z0-9-]/g, "");
   const lowerCasePath = validatedPath.toLowerCase();
   return `${lowerCasePath}/`;
 };

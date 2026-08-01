@@ -1,30 +1,30 @@
 export const createPrompt = (
-	title: string,
-	description: string,
-	artNote: string,
-	lines: string[],
-	line: string,
-	isCover: boolean,
+  title: string,
+  description: string,
+  artNote: string,
+  lines: string[],
+  line: string,
+  isCover: boolean,
 ): string => {
-	if (isCover) {
-		return `Create the cover for a children's book titled '${title}'. The book is about ${description}. Do not include text in the image. ${artNote}`;
-	}
-	return `Do not include text. Create an image for a page in a children's book named '${title}'.\n The full text of the book is: ${lines.join(" ")}.\nThe image should represent the following text for the page: '${line}'.\n${artNote}`;
+  if (isCover) {
+    return `Create the cover for a children's book titled '${title}'. The book is about ${description}. Do not include text in the image. ${artNote}`;
+  }
+  return `Do not include text. Create an image for a page in a children's book named '${title}'.\n The full text of the book is: ${lines.join(" ")}.\nThe image should represent the following text for the page: '${line}'.\n${artNote}`;
 };
 
 /** Create URL-safe filename based on the line */
 export const getFileName = (line: string) => {
-	const lineWithoutSpaces = line.replace(/\s/g, "-");
-	const sanitizedLine = lineWithoutSpaces.replace(/[^a-zA-Z0-9-]/g, "");
-	return `${sanitizedLine}.png`;
+  const lineWithoutSpaces = line.replace(/\s/g, "-");
+  const sanitizedLine = lineWithoutSpaces.replace(/[^a-zA-Z0-9-]/g, "");
+  return `${sanitizedLine}.png`;
 };
 
 /** Generates the baseUrl to be used as the static site URL prefix.
  * Example: (title: "The Great Adventure") => "/storybook/the-great-adventure"
  */
 export const getBaseUrl = (title: string) => {
-	const lineWithoutSpaces = title.replace(/\s/g, "-");
-	const sanitizedLine = lineWithoutSpaces.replace(/[^a-zA-Z0-9-]/g, "");
-	const lowerCaseLine = sanitizedLine.toLowerCase();
-	return `/storybook/${lowerCaseLine}`;
+  const lineWithoutSpaces = title.replace(/\s/g, "-");
+  const sanitizedLine = lineWithoutSpaces.replace(/[^a-zA-Z0-9-]/g, "");
+  const lowerCaseLine = sanitizedLine.toLowerCase();
+  return `/storybook/${lowerCaseLine}`;
 };
