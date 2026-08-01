@@ -4,7 +4,7 @@
   "description": "syncronus task runner for creating AI-generated storybooks",
   "main": "src/index.ts",
   "scripts": {
-    "prebuild": "npm run lint:write && npm run format",
+    "prebuild": "biome ci",
     "build": "tsc -p tsconfig.json",
     "check": "biome check",
     "cli": "ts-node src/cli.ts",
@@ -34,14 +34,10 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.6",
-    "@eslint/js": "^10.0.1",
     "@types/aws-lambda": "^8.10.162",
     "@types/jest": "^30.0.0",
     "@types/node": "^26.1.1",
-    "@typescript-eslint/eslint-plugin": "^8.65.0",
-    "@typescript-eslint/parser": "^8.64.0",
     "dotenv": "^17.4.2",
-    "eslint": "^10.7.0",
     "jest": "^30.4.2",
     "nodemon": "^3.1.14",
     "ts-jest": "^29.4.11",

@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "prebuild": "npm run lint:write && npm run format",
+    "prebuild": "biome ci",
     "build": "astro check && astro build",
     "dev": "astro dev",
     "format": "biome format --write",
