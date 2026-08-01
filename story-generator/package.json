@@ -4,7 +4,9 @@
 	"description": "syncronus task runner for creating AI-generated storybooks",
 	"main": "src/index.ts",
 	"scripts": {
+		"prebuild": "npm run lint:write && npm run format",
 		"build": "tsc -p tsconfig.json",
+		"check": "biome check",
 		"cli": "ts-node src/cli.ts",
 		"dev": "tsc --project tsconfig.json --watch & NODE_ENV=development nodemon dist",
 		"format": "biome format --write",
