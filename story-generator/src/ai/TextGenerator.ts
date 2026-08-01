@@ -3,7 +3,7 @@ import {
   BedrockRuntimeClient,
   InvokeModelCommand,
 } from "@aws-sdk/client-bedrock-runtime";
-import FileService from "src/s3/FileService";
+import FileService from "../s3/FileService";
 import * as textUtil from "./textUtil";
 
 export type TextGeneratorResponse = {

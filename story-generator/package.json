@@ -12,7 +12,7 @@
     "test": "jest --detectOpenHandles",
     "test-coverage": "jest --coverage",
     "test-lambda": "ts-node --transpile-only ./src/local.ts",
-    "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint src/",
     "clean": "rm -rf dist build",
     "ts-node": "ts-node"
   },
@@ -29,6 +29,7 @@
     "@google/genai": "^2.10.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/aws-lambda": "^8.10.162",
     "@types/jest": "^30.0.0",
     "@types/node": "^26.1.1",
@@ -40,6 +41,6 @@
     "nodemon": "^3.1.14",
     "ts-jest": "^29.4.11",
     "ts-node": "^10.9.2",
-    "typescript": "^7.0.2"
+    "typescript": "^6.0.3"
   }
 }

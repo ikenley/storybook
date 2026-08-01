@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "declaration": true,
     "strict": true,
     "noImplicitAny": true,
@@ -20,6 +20,7 @@
     "emitDecoratorMetadata": true,
     "sourceMap": true,
     "outDir": "./dist",
+    "rootDir": "./src",
     "types": [
       "node",
       "jest"
@@ -27,8 +28,7 @@
     "lib": [
       "ES6",
       "DOM"
-    ],
-    "baseUrl": "./"
+    ]
   },
   "include": [
     "src/**/*.ts"
