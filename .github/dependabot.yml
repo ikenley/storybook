@@ -8,17 +8,12 @@ updates:
       interval: "weekly"
 
   # npm is split per-directory so each can carry its own ignore rules.
+  # No ignore rules: since the toolchain moved to Biome and Vitest, nothing
+  # in this package declares a TypeScript peer range, so majors resolve freely.
   - package-ecosystem: "npm"
     directory: "/story-generator"
     schedule:
       interval: "weekly"
-    ignore:
-      # TypeScript majors must be upgraded in lockstep with the toolchain.
-      # TS 7 is outside the peer range of ts-jest 29.x (<7), which makes
-      # `npm i` unresolvable. Remove once ts-jest v30 supports TS 7, or once
-      # the test runner migration drops ts-jest entirely.
-      - dependency-name: "typescript"
-        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "npm"
     directory: "/front-end"

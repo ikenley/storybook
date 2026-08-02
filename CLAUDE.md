@@ -19,10 +19,11 @@ Storybook is an AI-powered children's book generator that uses AWS Step Function
 cd story-generator
 npm install
 npm run build          # Compile TypeScript
-npm test               # Run Jest tests
+npm test               # Run Vitest suite (npm run test-watch for watch mode)
+npm run test-coverage  # Vitest with v8 coverage
 npm run lint           # Biome lint (use `npm run check` for lint + format)
 npm run test-lambda    # Local Lambda testing (Node runs the .ts source directly)
-npm run typecheck      # tsc --noEmit
+npm run typecheck      # tsc --noEmit, incl. test files (tsconfig.test.json)
 ./scripts/docker_push_lambda.sh <version>  # Deploy Lambda Docker image
 ```
 

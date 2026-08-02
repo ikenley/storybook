@@ -3,8 +3,8 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "prebuild": "biome ci",
     "build": "astro check && astro build",
+    "ci": "biome ci",
     "dev": "astro dev",
     "format": "biome format --write",
     "lint": "biome lint",
