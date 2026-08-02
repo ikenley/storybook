@@ -151,6 +151,7 @@ resource "aws_sfn_state_machine" "step_fn" {
         }
       },
       "ResultPath": "$.GenerateStaticSite",
+      "TimeoutSeconds": 900,
       "Next": "SendConfirmationEmail"
     },
     "SendConfirmationEmail": {

@@ -26,7 +26,7 @@
     "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "types": ["node", "jest"],
+    "types": ["node"],
     "lib": ["ES6", "DOM"]
   },
   "include": ["src/**/*.ts"],

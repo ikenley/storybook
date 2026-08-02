@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# A new push to the same branch makes an in-flight run irrelevant.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  story-generator:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: story-generator
+    steps:
+      - uses: actions/checkout@v5
+
+      # Matches the Lambda base image (public.ecr.aws/lambda/nodejs:24), so CI
+      # runs the same Node that executes the deployed function.
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: story-generator/package-lock.json
+
+      - run: npm ci
+
+      # Biome lint + format, check-only. Resolves the shared config at the repo
+      # root via `extends: "//"`, which works here because the whole repo is
+      # checked out (unlike the Docker build, whose context is this directory).
+      - run: npm run ci
+
+      # Covers src/ plus test files and vitest.config.ts (tsconfig.test.json).
+      - run: npm run typecheck
+
+      - run: npm test
+
+      # Compiles to dist/ — the artifact the Lambda image ships.
+      - run: npm run build
+
+  front-end:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: front-end
+    steps:
+      - uses: actions/checkout@v5
+
+      # Matches front-end/Dockerfile (FROM node:26).
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "26"
+          cache: npm
+          cache-dependency-path: front-end/package-lock.json
+
+      - run: npm ci
+
+      - run: npm run ci
+
+      # story_config.json and home_config.json are gitignored and fetched from
+      # S3 by scripts/generate_site.sh at deploy time. The committed examples
+      # stand in so `astro check` can type the templates against real shapes.
+      - name: Stage config files normally fetched from S3
+        run: |
+          cp src/story_config.example.json src/story_config.json
+          cp homepage/src/home_config.example.json homepage/src/home_config.json
+
+      # Both run `astro check` before building, so these are the type gate for
+      # .astro templates — the part Biome cannot see.
+      - run: npm run build
+      - run: npm run build-home
