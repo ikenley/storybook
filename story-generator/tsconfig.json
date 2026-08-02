@@ -16,8 +16,13 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    // Node strips types at runtime rather than compiling them away, so the
+    // source must contain only syntax that erases cleanly.
+    "erasableSyntaxOnly": true,
+    // Relative imports are written with a .ts extension so `node src/local.ts`
+    // resolves them directly; tsc rewrites them to .js on emit.
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
     "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./src",

@@ -1,5 +1,5 @@
 import { type SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
-import type { ConfigOptions } from "../config/ConfigOptions";
+import type { ConfigOptions } from "../config/ConfigOptions.ts";
 
 /** Handles sending confirmation emails via AWS SES */
 export default class FileService {

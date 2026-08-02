@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
-import { requireEnv } from "./config/env";
-import handler from "./lambda_function";
+import { requireEnv } from "./config/env.ts";
+import handler from "./lambda_function.ts";
 
 // Set the NODE_ENV to 'development' by default
 process.env.NODE_ENV = process.env.NODE_ENV || "development";

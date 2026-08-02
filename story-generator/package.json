@@ -2,23 +2,20 @@
   "name": "storybook-generator",
   "version": "1.0.0",
   "description": "syncronus task runner for creating AI-generated storybooks",
-  "main": "src/index.ts",
+  "type": "module",
+  "main": "src/lambda_function.ts",
   "scripts": {
-    "prebuild": "biome ci",
     "build": "tsc -p tsconfig.json",
     "check": "biome check",
-    "cli": "ts-node src/cli.ts",
-    "dev": "tsc --project tsconfig.json --watch & NODE_ENV=development nodemon dist",
+    "ci": "biome ci",
     "format": "biome format --write",
     "lint": "biome lint",
     "lint:write": "biome lint --write",
-    "prestart": "npm run build",
-    "start": "nodemon",
     "test": "jest --detectOpenHandles",
     "test-coverage": "jest --coverage",
-    "test-lambda": "ts-node --transpile-only ./src/local.ts",
-    "clean": "rm -rf dist build",
-    "ts-node": "ts-node"
+    "test-lambda": "node ./src/local.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "clean": "rm -rf dist build"
   },
   "author": "ikenley",
   "license": "SEE LICENSE IN LICENSE.txt",
@@ -39,9 +36,7 @@
     "@types/node": "^26.1.1",
     "dotenv": "^17.4.2",
     "jest": "^30.4.2",
-    "nodemon": "^3.1.14",
     "ts-jest": "^29.4.11",
-    "ts-node": "^10.9.2",
     "typescript": "^6.0.3"
   }
 }

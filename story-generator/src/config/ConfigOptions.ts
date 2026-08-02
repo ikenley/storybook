@@ -1,4 +1,4 @@
-import { requireEnv } from "./env";
+import { requireEnv } from "./env.ts";
 
 export type S3Config = {
   bucketName: string;
