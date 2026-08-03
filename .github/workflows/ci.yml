@@ -20,7 +20,7 @@ jobs:
       run:
         working-directory: story-generator
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       # Matches the Lambda base image (public.ecr.aws/lambda/nodejs:24), so CI
       # runs the same Node that executes the deployed function.
@@ -51,7 +51,7 @@ jobs:
       run:
         working-directory: front-end
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       # Matches front-end/Dockerfile (FROM node:26).
       - uses: actions/setup-node@v5
