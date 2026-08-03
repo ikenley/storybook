@@ -24,7 +24,7 @@ jobs:
 
       # Matches the Lambda base image (public.ecr.aws/lambda/nodejs:24), so CI
       # runs the same Node that executes the deployed function.
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v7
         with:
           node-version: "24"
           cache: npm
@@ -54,7 +54,7 @@ jobs:
       - uses: actions/checkout@v7
 
       # Matches front-end/Dockerfile (FROM node:26).
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v7
         with:
           node-version: "26"
           cache: npm
