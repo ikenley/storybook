@@ -31,7 +31,7 @@
     "@google/genai": "^2.30.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.15",
+    "@biomejs/biome": "2.6.2",
     "@types/aws-lambda": "^8.10.164",
     "@types/node": "^26.6.5",
     "@vitest/coverage-v8": "^5.0.5",
