@@ -20,7 +20,7 @@ npm run start
 
 ```
 cd front-end
-./scripts/generate_site.sh "s3://924586450630-data-lake/ik-dev-storybook/2024-08-11/18b48ef3-9409-470a-ad6f-d1a7c775731d-story-config.json"
+./scripts/generate_site.sh "s3://<data-lack-bucket-name>/ik-dev-storybook/2024-08-11/18b48ef3-9409-470a-ad6f-d1a7c775731d-story-config.json"
 ```
 
 ---
@@ -31,7 +31,7 @@ cd front-end
 docker build -t ik-dev-storybook-task:test --build-arg VERSION=TEST .
 
 # Start the Docker image with the docker run command.
-docker run -e BASE_URL -e CDN_DOMAIN -e DISTRIBUTION_ID -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN  ik-dev-storybook-task:test "s3://924586450630-data-lake/ik-dev-storybook/2024-08-11/18b48ef3-9409-470a-ad6f-d1a7c775731d-story-config.json"
+docker run -e BASE_URL -e CDN_DOMAIN -e DISTRIBUTION_ID -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN  ik-dev-storybook-task:test "s3://<data-lake-bucket-name>/ik-dev-storybook/2024-08-11/18b48ef3-9409-470a-ad6f-d1a7c775731d-story-config.json"
 
 # Deploy
 ./scripts/docker_push.sh 10

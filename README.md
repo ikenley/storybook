@@ -27,6 +27,6 @@ terraform apply
 ```
 cd front-end
 npm run build
-aws s3 cp dist s3://static.ikenley.com/cat-story/ --recursive
+aws s3 cp dist s3://<bucket-name>/cat-story/ --recursive
 aws cloudfront create-invalidation --distribution-id ESXOJUXNNU11Y --paths /cat-story/*
 ```

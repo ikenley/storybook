@@ -3,7 +3,7 @@
     {
       "name": "storybook-ssg",
       "command": [
-        "s3://924586450630-data-lake/ik-dev-storybook/2024-08-11/18b48ef3-9409-470a-ad6f-d1a7c775731d-story-config.json"
+        "s3://${CDN_DOMAIN}/ik-dev-storybook/2024-08-11/18b48ef3-9409-470a-ad6f-d1a7c775731d-story-config.json"
       ],
       "environment": [
         {
